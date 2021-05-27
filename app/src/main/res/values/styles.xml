@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="title">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/textBoldColor</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="subtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textLightColor</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="category_name">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/textBoldColor</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="hintText">
+
+    </style>
+</resources>

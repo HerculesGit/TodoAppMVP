@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">ToDoAppMVP</string>
+    <string name="create_task">Create a new task</string>
+    <string name="whats_up_user">What\'s up, %1$s!</string>
+    <string name="category">CATEGORIES</string>
+    <string name="today_tasks">TODAY\'S TASKS</string>
+    <string name="today">Today</string>
+    <string name="new_task">New Task</string>
+    <string name="enter_new_task">Enter new Task</string>
+    <string name="the_task_was_deleted">The task was deleted</string>
+    <string name="undo">UNDO</string>
+    <string name="lorem_ipsum">Crie um arquivo de layout que você usará posteriormente para o conteúdo de um fragmento. Você também precisará definir uma string para o conteúdo do fragmento. O exemplo a seguir contém uma visualização de texto que exibe esse</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--  hamburger options  -->
+    <string name="templates">Templates</string>
+    <string name="categories">Categories</string>
+    <string name="analytics">Analytics</string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="task_removed">Task removed</string>
+</resources>

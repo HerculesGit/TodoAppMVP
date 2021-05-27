@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hamburger_options">
+        <item>@string/templates</item>
+        <item>@string/categories</item>
+        <item>@string/analytics</item>
+        <item>@string/settings</item>
+    </string-array>
+</resources>

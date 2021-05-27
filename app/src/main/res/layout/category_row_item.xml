@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/recycler_view_category_bg"
+        android:elevation="0dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="32dp">
+
+        <TextView
+            android:id="@+id/tv_amount_tasks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="40 tasks"
+            android:textColor="@color/textLightColor" />
+
+        <TextView
+            android:id="@+id/tv_category_name"
+            style="@style/category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Business" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/magenta_color" />
+
+    </LinearLayout>
+
+</LinearLayout>
