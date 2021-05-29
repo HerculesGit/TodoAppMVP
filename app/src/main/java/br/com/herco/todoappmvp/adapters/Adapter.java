@@ -1,24 +1,6 @@
 package br.com.herco.todoappmvp.adapters;
 
 
-import android.graphics.Canvas;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import br.com.herco.todoappmvp.models.TaskModel;
-
-import static androidx.recyclerview.widget.ItemTouchHelper.Callback.getDefaultUIUtil;
-
 public class Adapter {
 
 }

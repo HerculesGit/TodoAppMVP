@@ -16,26 +16,29 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
     @SerializedName("isDone")
     private boolean isDone;
 
-    @SerializedName("createAt")
-    private Date createAt;
+    @SerializedName("createdAt")
+    private Date createdAt;
 
-    @SerializedName("updateAt")
-    private Date updateAt;
+    @SerializedName("updatedAt")
+    private Date updatedAt;
+
+    @SerializedName("deletedAt")
+    private Date deletedAt;
 
     public TaskModel(String name) {
         this.name = name;
         this.isDone = false;
 
-        this.createAt = new Date();
-        this.updateAt = new Date();
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
 
     public TaskModel(String name, boolean isDone) {
         this.name = name;
         this.isDone = isDone;
 
-        this.createAt = new Date();
-        this.updateAt = new Date();
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
 
     public String getName() {
@@ -62,55 +65,44 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
         this.id = id;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 
     @Override
     public String toString() {
         return "TaskModel{" +
                 "id=" + id +
-                ", name=" + name +
+                ", name='" + name + '\'' +
                 ", isDone=" + isDone +
-                ", createAt=" + createAt +
-                ", updateAt=" + updateAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 
-//    public String toJson() {
-//        return "{" +
-//                "id=" + id +
-//                ", name=" + name +
-//                ", isDone=" + isDone +
-//                ", createAt=" + createAt +
-//                ", updateAt=" + updateAt +
-//                '}';
-//    }
-//
-//    public TaskModel fromJson(String taskStr) {
-//        String[] values = taskStr.split("=");
-//        setId(Integer.valueOf(values[1]));
-//        setName(values[3]);
-//        setDone(Boolean.valueOf(values[5]));
-//
-//        return this;
-//    }
-
     @Override
     public int compareTo(TaskModel task) {
-        return (this.updateAt.after(task.updateAt)) ? 0 : -1;
+        return (this.updatedAt.after(task.updatedAt)) ? 0 : -1;
     }
 }

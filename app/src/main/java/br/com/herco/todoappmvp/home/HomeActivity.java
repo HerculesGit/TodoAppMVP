@@ -31,17 +31,15 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
 
     @Override
     public void initUI() {
-        profileFragment = new ProfileFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        profileFragment = new ProfileFragment();
+        homeFragment = new HomeFragment();
+
         fragmentManager.beginTransaction()
+                .replace(R.id.fragment_home_task, homeFragment)
                 .replace(R.id.fragment_user, profileFragment, profileFragment.getTag())
                 .commit();
-
-        homeFragment = new HomeFragment();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_home_task, homeFragment, homeFragment.getTag())
-                .commit();
-
 
         profileFragment.setListener(this);
         homeFragment.setListener(this);

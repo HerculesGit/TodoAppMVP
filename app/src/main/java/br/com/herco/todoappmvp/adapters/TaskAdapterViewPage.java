@@ -18,10 +18,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import br.com.herco.todoappmvp.R;
-import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.models.TaskModel;
 
 public class TaskAdapterViewPage extends RecyclerView.Adapter<TaskViewHolderPageView> {
@@ -176,7 +174,7 @@ public class TaskAdapterViewPage extends RecyclerView.Adapter<TaskViewHolderPage
             taskModel.setDone(!taskModel.isDone());
 
             if (onClickListener != null) {
-                this.onClickListener.onTaskClicked(taskModel);
+                this.onClickListener.onTaskClicked(index, taskModel);
             }
 
             // TODO: Remove it, because this code would is on the updateSuccess

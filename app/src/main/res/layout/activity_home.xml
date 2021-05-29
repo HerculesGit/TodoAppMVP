@@ -23,7 +23,6 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_user"
-                android:name="br.com.herco.todoappmvp.fragments.profile.ProfileFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>
@@ -37,7 +36,6 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_home_task"
-                android:name="br.com.herco.todoappmvp.fragments.home.HomeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </RelativeLayout>

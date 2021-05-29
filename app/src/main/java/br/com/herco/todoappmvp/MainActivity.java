@@ -166,8 +166,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainCo
     }
 
     @Override
-    public void onTaskClicked(TaskModel taskModel) {
+    public void onTaskClicked(int index, TaskModel taskModel) {
         presenter.updateTask(taskModel);
+
     }
 
     @Override

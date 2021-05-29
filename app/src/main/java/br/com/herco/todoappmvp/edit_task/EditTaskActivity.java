@@ -1,7 +1,6 @@
 package br.com.herco.todoappmvp.edit_task;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -14,8 +13,7 @@ import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.dto.TaskDTO;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
-import br.com.herco.todoappmvp.repositories.task.TaskRepository;
-import br.com.herco.todoappmvp.services.database.preferences.DataBasePreferences;
+import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
 
 public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements IEditTaskContract {
     private TaskDTO taskDTO;
@@ -29,13 +27,12 @@ public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements
 
     @Override
     public EditTaskPresenter loadPresenter() {
-        return new EditTaskPresenter(this, new TaskRepository(
-                new DataBasePreferences(getSharedPreferences(
-                        Constants.Database.DATABASE_PREFERENCES, Context.MODE_PRIVATE))));
+        return new EditTaskPresenter(this, new TaskRestRepositoryImpl());
     }
 
     @Override
     public void onCreateTask(TaskModel task) {
+        taskDTO.setTaskModel(task);
         returnToTaskList();
     }
 

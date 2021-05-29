@@ -10,7 +10,11 @@ public interface IHomeContractView {
 
     void onTaskLoadError(String messageError);
 
-    void updateTaskSuccess();
+    void onUpdateTaskSuccess(int index, TaskModel taskModel);
 
-    void updateTaskError(String messageError);
+    void onUpdateTaskError(int index, String messageError);
+
+    void onDeletedTask(int index);
+
+    void onDeletedTaskError(int index, String messageError);
 }

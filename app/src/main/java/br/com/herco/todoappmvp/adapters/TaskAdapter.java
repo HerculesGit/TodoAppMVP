@@ -3,8 +3,6 @@ package br.com.herco.todoappmvp.adapters;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.herco.todoappmvp.R;
@@ -21,6 +20,7 @@ import br.com.herco.todoappmvp.viewholders.TaskViewHolder;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private List<TaskModel> tasks;
+    private List<TaskModel> tasksDeleted;
     private final Context context;
     private final RecyclerView recyclerViewTask;
     private OnTaskListener onClickListener;
@@ -31,6 +31,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         this.tasks = tasks;
         this.context = context;
         this.recyclerViewTask = recyclerViewTask;
+        this.tasksDeleted = new ArrayList<>();
     }
 
     @NonNull
@@ -86,6 +87,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
     @Override
     public int getItemCount() {
+        if (tasks == null) return 0;
         return tasks.size();
     }
 
@@ -100,11 +102,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
             taskModel.setDone(!taskModel.isDone());
 
             if (onClickListener != null) {
-                this.onClickListener.onTaskClicked(taskModel);
+                this.onClickListener.onTaskClicked(index, taskModel);
             }
-
-            // TODO: Remove it, because this code would is on the updateSuccess
-            notifyDataSetChanged();
         });
     }
 
@@ -115,6 +114,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
     public void addAllTasks(List<TaskModel> taskModels) {
         tasks = taskModels;
+        tasksDeleted = new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -122,13 +122,52 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         lastTaskDeleted = tasks.remove(position);
         lastPositionDeleted = position;
         notifyItemRemoved(position);
+
+        if (tasksDeleted.isEmpty()) {
+            tasksDeleted.add(lastTaskDeleted);
+        } else {
+            tasksDeleted.add(position, lastTaskDeleted);
+        }
+
     }
 
     public void restoreTask() {
         if (lastTaskDeleted != null) {
             tasks.add(lastPositionDeleted, lastTaskDeleted);
+            tasksDeleted.remove(lastPositionDeleted);
             notifyItemInserted(lastPositionDeleted);
         }
+    }
+
+    public void restoreTask(int index) {
+        TaskModel task = tasksDeleted.get(index);
+        tasks.add(index, task);
+    }
+
+    public void updateTask(int index, TaskModel taskUpdated) {
+        notifyItemChanged(index, taskUpdated);
+    }
+
+    public TaskModel getTaskDeletedById(Integer id) {
+        for (TaskModel task : tasksDeleted) {
+            if (task.getId() == id) {
+                return task;
+            }
+        }
+        return null;
+    }
+
+    public TaskModel getTaskByPosition(int position) {
+        return tasks.get(position);
+    }
+
+
+    public int getLastPositionDeleted() {
+        return lastPositionDeleted;
+    }
+
+    public TaskModel getLastTaskDeleted() {
+        return lastTaskDeleted;
     }
 }
 

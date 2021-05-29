@@ -7,6 +7,7 @@ import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.services.database.IDataBaseService;
 import br.com.herco.todoappmvp.validators.TaskValidator;
 
+@Deprecated
 public class TaskRepository implements ITaskRepository {
 
     private final IDataBaseService taskDataBaseService;

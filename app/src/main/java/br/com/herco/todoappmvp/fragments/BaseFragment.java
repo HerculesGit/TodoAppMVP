@@ -53,9 +53,42 @@ public abstract class BaseFragment<T> extends Fragment {
      * Show SnackBar
      */
     protected void showSnackBar(View parentLayout, String text, String textButton, View.OnClickListener onPressed) {
-        Snackbar.make(parentLayout, text, Snackbar.LENGTH_LONG)
+        showSnackBar(parentLayout, null, text, textButton, onPressed);
+    }
+
+    protected void showSnackBar(View parentLayout, String uuid, String text, String textButton, View.OnClickListener onPressed) {
+        Snackbar snackbar = Snackbar.make(parentLayout, text, Snackbar.LENGTH_LONG)
                 .setAction(textButton, view -> onPressed.onClick(view))
-                .setActionTextColor(getResources().getColor(R.color.white))
-                .show();
+                .setActionTextColor(getResources().getColor(R.color.white));
+        snackbar.addCallback(new Snackbar.Callback() {
+
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT || event == Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE) {
+                    onSnackBarDismissEventTimeout(uuid);
+                } else if (event == Snackbar.Callback.DISMISS_EVENT_MANUAL) {
+                    onSnackBarDismissEvent(uuid);
+                }
+            }
+
+            @Override
+            public void onShown(Snackbar snackbar) {
+            }
+        });
+        snackbar.show();
+    }
+
+    /**
+     *
+     */
+    protected void onSnackBarDismissEvent(String uuid) {
+
+    }
+
+    /**
+     *
+     */
+    protected void onSnackBarDismissEventTimeout(String uuid) {
+
     }
 }

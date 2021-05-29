@@ -14,7 +14,6 @@ import br.com.herco.todoappmvp.edit_task.IEditTaskContract;
 import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.repositories.task.TaskRepository;
-import br.com.herco.todoappmvp.services.database.preferences.DataBasePreferences;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

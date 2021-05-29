@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
 
+@Deprecated
 public interface ITaskRepository {
 
     TaskModel createTask(TaskModel taskModel) throws TaskException;

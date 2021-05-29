@@ -1,6 +1,5 @@
 package br.com.herco.todoappmvp.fragments.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -39,9 +38,10 @@ import br.com.herco.todoappmvp.fragments.BaseFragment;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
 import br.com.herco.todoappmvp.models.CategoryModel;
 import br.com.herco.todoappmvp.models.TaskModel;
-import br.com.herco.todoappmvp.repositories.task.TaskRepository;
-import br.com.herco.todoappmvp.services.database.preferences.DataBasePreferences;
+import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
 import br.com.herco.todoappmvp.viewholders.TaskViewHolder;
+
+import static br.com.herco.todoappmvp.constants.Constants.TAGS.TASK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,9 +92,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public HomeFragmentPresenter loadPresenter() {
-        return new HomeFragmentPresenter(this, new TaskRepository(
-                new DataBasePreferences(getActivity().getSharedPreferences(
-                        Constants.Database.DATABASE_PREFERENCES, Context.MODE_PRIVATE))));
+        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl());
     }
 
     private void getFloatingActionButtonBNewTask() {
@@ -179,45 +177,60 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void onTasksLoad(List<TaskModel> tasks) {
-        Log.d("onTasksLoad", tasks.toString());
+        Log.d(TASK, "call onTasksLoad");
         taskAdapter.addAllTasks(tasks);
     }
 
     @Override
     public void onTaskLoadError(String messageError) {
-        Log.d("onTaskLoadError", "");
+        Log.d(TASK, "call onTaskLoadError");
     }
 
     @Override
-    public void updateTaskSuccess() {
-        Log.d("updateTaskSuccess", "updateTaskSuccess");
+    public void onTaskClicked(int index, TaskModel taskModel) {
+        presenter.updateTask(index, taskModel);
     }
 
     @Override
-    public void updateTaskError(String messageError) {
-        Log.d("onTasksLoad", "messageError");
+    public void onUpdateTaskSuccess(int index, TaskModel taskUpdated) {
+        Log.d(TASK, "call updateTaskSuccess");
+        taskAdapter.updateTask(index, taskUpdated);
+    }
+
+    @Override
+    public void onUpdateTaskError(int index, String messageError) {
+        Log.d(TASK, "call updateTaskError");
         showToast(messageError);
+        taskAdapter.notifyItemChanged(index);
     }
 
     @Override
-    public void onTaskClicked(TaskModel taskModel) {
-        presenter.updateTask(taskModel);
+    public void onDeletedTask(int index) {
+        // taskAdapter.deleteTask(index);
+        Log.d(TASK, "call onDeletedTask");
+    }
+
+    @Override
+    public void onDeletedTaskError(int index, String messageError) {
+        showToast(messageError);
+        taskAdapter.restoreTask(index);
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         final View view = ((TaskViewHolder) viewHolder).getBackgroundView();
-        animateDeletingTask(view);
+        animateDeletingTask(view, position);
         deleteTask(position);
     }
 
-    private void animateDeletingTask(View view) {
+    private void animateDeletingTask(View view, int position) {
         view.animate()
                 .translationX(view.getWidth())
                 .alpha(0.0f)
                 .setDuration(100);
 
-        showSnackBar(view, getString(R.string.task_removed), getString(R.string.undo), onPressed -> {
+        String uuid = taskAdapter.getTaskByPosition(position).getId().toString();
+        showSnackBar(view, uuid, getString(R.string.task_removed), getString(R.string.undo), onPressed -> {
             restoreTask();
         });
     }
@@ -226,6 +239,24 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             taskAdapter.deleteTask(position);
         }, 100);
+    }
+
+    @Override
+    protected void onSnackBarDismissEventTimeout(String uuid) {
+        Log.e("uuid", uuid);
+        if (uuid != null) {
+            try {
+                Integer taskId = Integer.valueOf(uuid);
+                TaskModel lastTaskDeleted = taskAdapter.getTaskDeletedById(taskId);
+
+                if (taskId == lastTaskDeleted.getId()) {
+                    presenter.deleteTask(taskAdapter.getLastPositionDeleted(), lastTaskDeleted);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        super.onSnackBarDismissEventTimeout(uuid);
     }
 
     private void restoreTask() {

@@ -14,7 +14,7 @@ public class Constants {
     }
 
     public static class TAGS {
-        public static final String TASK = "task";
+        public static final String TASK = "TASK";
 
     }
 
