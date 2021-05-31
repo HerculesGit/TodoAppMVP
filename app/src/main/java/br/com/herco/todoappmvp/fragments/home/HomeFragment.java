@@ -39,6 +39,8 @@ import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
 import br.com.herco.todoappmvp.models.CategoryModel;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.repositories.task.TaskSQLiteRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.sqlite.DatabaseHandler;
 import br.com.herco.todoappmvp.viewholders.TaskViewHolder;
 
 import static br.com.herco.todoappmvp.constants.Constants.TAGS.TASK;
@@ -92,7 +94,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public HomeFragmentPresenter loadPresenter() {
-        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl());
+        return new HomeFragmentPresenter(this,
+                new TaskSQLiteRepositoryImpl(new DatabaseHandler(getContext())));
     }
 
     private void getFloatingActionButtonBNewTask() {

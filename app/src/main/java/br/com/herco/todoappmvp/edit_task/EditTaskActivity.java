@@ -14,6 +14,8 @@ import br.com.herco.todoappmvp.dto.TaskDTO;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.repositories.task.TaskSQLiteRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.sqlite.DatabaseHandler;
 
 public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements IEditTaskContract {
     private TaskDTO taskDTO;
@@ -27,7 +29,7 @@ public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements
 
     @Override
     public EditTaskPresenter loadPresenter() {
-        return new EditTaskPresenter(this, new TaskRestRepositoryImpl());
+        return new EditTaskPresenter(this, new TaskSQLiteRepositoryImpl(new DatabaseHandler(this)));
     }
 
     @Override
