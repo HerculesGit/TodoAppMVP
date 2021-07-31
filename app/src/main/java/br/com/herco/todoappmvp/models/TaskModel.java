@@ -8,7 +8,7 @@ import java.util.Date;
 public class TaskModel implements Serializable, Comparable<TaskModel> {
 
     @SerializedName("id")
-    private Integer id;
+    private String id;
 
     @SerializedName("name")
     private String name;
@@ -24,6 +24,9 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
 
     @SerializedName("deletedAt")
     private Date deletedAt;
+
+    @SerializedName("userId")
+    private String userId;
 
     public TaskModel(String name) {
         this.name = name;
@@ -57,11 +60,11 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
         isDone = done;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -87,6 +90,14 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

@@ -2,7 +2,7 @@ package br.com.herco.todoappmvp.application;
 
 import br.com.herco.todoappmvp.models.UserModel;
 
-public final class TodoApp {
+public final class TodoApp implements ITodoApp {
     private static TodoApp instance;
 
     public UserModel currentUser;
@@ -21,5 +21,10 @@ public final class TodoApp {
             instance = new TodoApp();
         }
         return instance;
+    }
+
+    @Override
+    public UserModel getCurrentUser() {
+        return currentUser;
     }
 }

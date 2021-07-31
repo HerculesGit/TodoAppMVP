@@ -9,9 +9,11 @@ import android.widget.RadioButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import br.com.herco.todoappmvp.R;
+import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.dto.TaskDTO;
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
 
@@ -63,8 +65,8 @@ public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements
             taskDTO = new TaskDTO();
             TaskModel taskModel = new TaskModel(taskName, rbIsDone.isChecked());
             taskDTO.setTaskModel(taskModel);
-
-            presenter.createTask(taskModel);
+            UserModel currentUser = TodoApp.getInstance().getCurrentUser();
+            presenter.createTask(taskModel, currentUser.getId());
         }
     }
 

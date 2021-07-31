@@ -22,12 +22,18 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements IBase
     public abstract void initUI();
 
     @Override
+    public void onViewReady() {
+        // do nothing
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
 
         presenter = loadPresenter();
         initUI();
+        onViewReady();
     }
 
     protected void showToast(String message) {

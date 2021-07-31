@@ -11,6 +11,8 @@ public class Constants {
         public static final String TASK = "task";
         public static final String ALL_TASKS = "tasks";
         public static final int MAX_ID = 10;
+
+        public static final String GSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     }
 
     public static class TAGS {

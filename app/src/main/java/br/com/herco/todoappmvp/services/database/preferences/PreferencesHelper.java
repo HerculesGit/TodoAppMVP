@@ -2,7 +2,11 @@ package br.com.herco.todoappmvp.services.database.preferences;
 
 import java.util.Random;
 
+import java.util.UUID;
+
 public class PreferencesHelper {
+
+    @Deprecated
     static int getId() {
         final Random random = new Random();
         final int[] values = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -14,5 +18,9 @@ public class PreferencesHelper {
         }
 
         return Integer.valueOf(key);
+    }
+
+    static String getUUID (){
+        return UUID.randomUUID().toString();
     }
 }

@@ -1,7 +1,6 @@
 package br.com.herco.todoappmvp.edit_task;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.mvp.BasePresenter;
@@ -10,8 +9,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditTaskPresenter extends BasePresenter {
-    final IEditTaskContract mViewContract;
-    final ITaskRestRepository taskRepository;
+    private final IEditTaskContract mViewContract;
+    private final ITaskRestRepository taskRepository;
 
     public EditTaskPresenter(IEditTaskContract mViewContract, ITaskRestRepository taskRepository) {
         this.mViewContract = mViewContract;
@@ -19,8 +18,10 @@ public class EditTaskPresenter extends BasePresenter {
     }
 
     @SuppressLint("CheckResult")
-    public void createTask(TaskModel taskModel) {
+    public void createTask(TaskModel taskModel, String userId) {
         try {
+            taskModel.setUserId(userId);
+
             taskRepository.createTask(taskModel)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

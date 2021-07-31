@@ -13,7 +13,7 @@ public interface ITaskRestRepository {
 
     Observable<TaskModel> deleteTask(TaskModel taskModel) throws TaskException;
 
-    Observable<TaskModel> getTask(int id) throws TaskException;
+    Observable<TaskModel> getTask(String taskId) throws TaskException;
 
-    Observable<List<TaskModel>> getAllTasks(int userId) throws TaskException;
+    Observable<List<TaskModel>> getAllTasks(String userId) throws TaskException;
 }

@@ -6,22 +6,28 @@ import android.graphics.drawable.Drawable;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
 import br.com.herco.todoappmvp.R;
+import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.fragments.home.HomeFragment;
 import br.com.herco.todoappmvp.fragments.profile.ProfileFragment;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
+import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
+import br.com.herco.todoappmvp.repositories.user.UserRepository;
 
-public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements OnNavDrawerListener {
+public class HomeActivity extends BaseActivity<HomeActivityPresenter>
+        implements OnNavDrawerListener, IHomeContract.IHomeView {
+
     private ProfileFragment profileFragment;
     private HomeFragment homeFragment;
     private boolean drawerIsOpen = false;
 
     @Override
     public HomeActivityPresenter loadPresenter() {
-        return new HomeActivityPresenter();
+        return new HomeActivityPresenter(this, new UserRepository());
     }
 
     @Override
@@ -43,6 +49,12 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
 
         profileFragment.setListener(this);
         homeFragment.setListener(this);
+    }
+
+    @Override
+    public void onViewReady() {
+        presenter.getCurrentUser();
+        super.onViewReady();
     }
 
     private void handleNavDrawer() {
@@ -124,5 +136,16 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter> implements
     @Override
     public void onHamburgerDrawerPressed() {
         handleNavDrawer();
+    }
+
+    @Override
+    public void getCurrentUserSuccess(UserModel userModel) {
+        TodoApp.getInstance().currentUser = userModel;
+        Log.e("HomeUSuccess", userModel.toString());
+    }
+
+    @Override
+    public void getCurrentUserError(String message) {
+        Log.e("HomeUError", message);
     }
 }

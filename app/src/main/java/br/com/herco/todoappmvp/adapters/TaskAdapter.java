@@ -134,7 +134,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public void restoreTask() {
         if (lastTaskDeleted != null) {
             tasks.add(lastPositionDeleted, lastTaskDeleted);
-            tasksDeleted.remove(lastPositionDeleted);
+            tasksDeleted.remove(lastTaskDeleted);
             notifyItemInserted(lastPositionDeleted);
         }
     }
@@ -148,9 +148,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         notifyItemChanged(index, taskUpdated);
     }
 
-    public TaskModel getTaskDeletedById(Integer id) {
+    public TaskModel getTaskDeletedById(String uuid) {
         for (TaskModel task : tasksDeleted) {
-            if (task.getId() == id) {
+            if (task.getId().equals(uuid)) {
                 return task;
             }
         }

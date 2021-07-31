@@ -20,9 +20,9 @@ public class HomeFragmentPresenter {
     }
 
     @SuppressLint("CheckResult")
-    public void loadTasks() {
+    public void loadTasks(String userId) {
         try {
-            taskRepository.getAllTasks(1)
+            taskRepository.getAllTasks(userId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((tasks) -> iHomeContractView.onTasksLoad(tasks), throwable -> {

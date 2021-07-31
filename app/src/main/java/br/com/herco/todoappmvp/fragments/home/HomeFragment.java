@@ -31,6 +31,7 @@ import br.com.herco.todoappmvp.adapters.CategoryAdapter;
 import br.com.herco.todoappmvp.adapters.OnTaskListener;
 import br.com.herco.todoappmvp.adapters.TaskAdapter;
 import br.com.herco.todoappmvp.adapters.swiped.SwipeController;
+import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.dto.TaskDTO;
 import br.com.herco.todoappmvp.edit_task.EditTaskActivity;
@@ -38,6 +39,7 @@ import br.com.herco.todoappmvp.fragments.BaseFragment;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
 import br.com.herco.todoappmvp.models.CategoryModel;
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
 import br.com.herco.todoappmvp.viewholders.TaskViewHolder;
 
@@ -61,6 +63,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     private TaskAdapter taskAdapter;
     private FloatingActionButton fabNewTask;
+
+    private UserModel currentUser;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -87,7 +91,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         this.buildRecyclerViewCategories();
         this.buildRecyclerViewTasks();
         this.getFloatingActionButtonBNewTask();
-        this.presenter.loadTasks();
+        this.presenter.loadTasks(currentUser.getId());
     }
 
     @Override
@@ -103,8 +107,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     }
 
     private void getUser() {
+        this.currentUser = TodoApp.getInstance().getCurrentUser();
         final TextView textView = findViewById(R.id.tv_whats_up_user);
-        textView.setText(getString(R.string.whats_up_user, "Joy"));
+        textView.setText(getString(R.string.whats_up_user, currentUser.getName()));
     }
 
     private void buildRecyclerViewCategories() {
@@ -246,12 +251,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         Log.e("uuid", uuid);
         if (uuid != null) {
             try {
-                Integer taskId = Integer.valueOf(uuid);
-                TaskModel lastTaskDeleted = taskAdapter.getTaskDeletedById(taskId);
-
-                if (taskId == lastTaskDeleted.getId()) {
-                    presenter.deleteTask(taskAdapter.getLastPositionDeleted(), lastTaskDeleted);
-                }
+                TaskModel lastTaskDeleted = taskAdapter.getTaskDeletedById(uuid);
+                presenter.deleteTask(taskAdapter.getLastPositionDeleted(), lastTaskDeleted);
             } catch (Exception e) {
                 e.printStackTrace();
             }

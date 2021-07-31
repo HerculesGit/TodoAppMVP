@@ -118,7 +118,7 @@ public class TaskAdapterViewPage extends RecyclerView.Adapter<TaskViewHolderPage
         }
     }
 
-    List<Integer> getTasks = new ArrayList<>();
+    List<String> getTasks = new ArrayList<>();
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolderPageView taskViewHolderPageView, int index) {

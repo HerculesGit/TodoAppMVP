@@ -71,7 +71,7 @@ public class TaskValidatorTest {
         final String taskName = "Learn unit test with Java";
         TaskModel taskModel = new TaskModel(taskName);
 
-        taskModel.setId(1);
+        taskModel.setId("d9d9c267-1e56-4b3e-853b-e023a77966ab");
         TaskValidator.validateTaskToUpdate(taskModel);
 
         assertNotNull(taskModel);

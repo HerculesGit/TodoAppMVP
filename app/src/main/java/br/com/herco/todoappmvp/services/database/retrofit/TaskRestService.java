@@ -13,15 +13,15 @@ import retrofit2.http.Path;
 
 public interface TaskRestService {
 
-    @GET("tasks")
-    Observable<List<TaskModel>> listTasks();
+    @GET("user/{userId}/tasks")
+    Observable<List<TaskModel>> listTasks(@Path("userId") String userId);
 
     @POST("tasks")
     Observable<TaskModel> postTask(@Body TaskModel task);
 
     @PUT("task/{id}")
-    Observable<TaskModel> updateTask(@Path("id") Integer id, @Body TaskModel task);
+    Observable<TaskModel> updateTask(@Path("id") String uuid, @Body TaskModel task);
 
     @DELETE("task/{id}")
-    Observable<TaskModel> deleteTask(@Path("id") Integer id);
+    Observable<TaskModel> deleteTask(@Path("id") String uuid);
 }

@@ -27,7 +27,7 @@ public class DataBasePreferences implements IDataBaseService {
 
     @Override
     public TaskModel saveTask(TaskModel taskModel) {
-        taskModel.setId(PreferencesHelper.getId());
+        taskModel.setId(PreferencesHelper.getUUID());
 
         List<TaskModel> tasks = getAllTaskByUser(0);
         tasks.add(taskModel);
@@ -75,10 +75,10 @@ public class DataBasePreferences implements IDataBaseService {
         editor.commit();
     }
 
-    private int findTaskById(Integer id, List<TaskModel> tasks) {
+    private int findTaskById(String uuid, List<TaskModel> tasks) {
         int index = 0;
         for (TaskModel task : tasks) {
-            if (task.getId().intValue() == id.intValue()) {
+            if (task.getId().equals(uuid)) {
                 return index;
             }
             index++;

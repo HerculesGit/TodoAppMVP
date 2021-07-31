@@ -32,12 +32,12 @@ public class TaskRestRepositoryImpl implements ITaskRestRepository {
     }
 
     @Override
-    public Observable<TaskModel> getTask(int id) throws TaskException {
+    public Observable<TaskModel> getTask(String taskId) throws TaskException {
         return null;
     }
 
     @Override
-    public Observable<List<TaskModel>> getAllTasks(int userId) throws TaskException {
-        return service.listTasks();
+    public Observable<List<TaskModel>> getAllTasks(String userId) throws TaskException {
+        return service.listTasks(userId);
     }
 }
