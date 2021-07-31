@@ -1,5 +1,9 @@
 package br.com.herco.todoappmvp.mvp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import br.com.herco.todoappmvp.R;
+import br.com.herco.todoappmvp.utils.network.NetworkChangeReceiver;
 
 // TODO: CREATE A BASE COMPONENT TO REPLACE THE BOTH CODE OF THE BaseActivity and BaseFragment
 public abstract class BaseActivity<T> extends AppCompatActivity implements IBaseView<T> {
@@ -21,9 +26,32 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements IBase
 
     public abstract void initUI();
 
+    private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            super.onReceive(context, intent);
+        }
+    };
+
     @Override
     public void onViewReady() {
         // do nothing
+    }
+
+    @Override
+    protected void onResume() {
+
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(this.networkChangeReceiver, intentFilter);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+
+        unregisterReceiver(this.networkChangeReceiver);
+        super.onPause();
     }
 
     @Override

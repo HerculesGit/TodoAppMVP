@@ -1,5 +1,6 @@
 package br.com.herco.todoappmvp.fragments.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.herco.todoappmvp.R;
+import br.com.herco.todoappmvp.activities.settings.SettingsActivity;
 import br.com.herco.todoappmvp.adapters.NavAdapter;
 import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.fragments.BaseFragment;
@@ -84,6 +86,13 @@ public class ProfileFragment extends BaseFragment<ProfilePresenter> implements I
         );
 
         NavAdapter navAdapter = new NavAdapter(getActivity(), navItems);
+        navAdapter.setOnNavItemListener((navItem, position) -> {
+
+            // Settings
+            if (position == 3) {
+                startActivity(new Intent(requireActivity(), SettingsActivity.class));
+            }
+        });
 
         listViewNavItems = findViewById(R.id.lv_nav_items);
         listViewNavItems.setAdapter(navAdapter);

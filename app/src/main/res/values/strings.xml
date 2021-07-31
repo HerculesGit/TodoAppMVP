@@ -21,4 +21,6 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="task_removed">Task removed</string>
+    <string name="offline_synchronization">Offline synchronization</string>
+    <string name="synchronization">Synchronization</string>
 </resources>

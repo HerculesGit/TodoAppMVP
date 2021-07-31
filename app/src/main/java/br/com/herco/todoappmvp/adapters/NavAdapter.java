@@ -21,6 +21,8 @@ public class NavAdapter extends ArrayAdapter<NavItem> {
     private final Context context;
     private final List<NavItem> navItems;
 
+    private OnNavItemListener onNavClicked;
+
     public NavAdapter(@NonNull Context context, List<NavItem> navItems) {
         super(context, 0, navItems);
 
@@ -43,6 +45,18 @@ public class NavAdapter extends ArrayAdapter<NavItem> {
 
         ImageView imgNavIcon = view.findViewById(R.id.img_nav_icon);
         imgNavIcon.setImageResource(navItem.getIcon());
+
+        view.setOnClickListener(v -> {
+            if (onNavClicked != null) onNavClicked.onNavClicked(navItem, position);
+        });
         return view;
+    }
+
+    public void setOnNavItemListener(OnNavItemListener onNavClicked) {
+        this.onNavClicked = onNavClicked;
+    }
+
+    public interface OnNavItemListener {
+        void onNavClicked(NavItem navItem, int position);
     }
 }

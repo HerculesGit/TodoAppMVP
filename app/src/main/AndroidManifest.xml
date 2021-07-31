@@ -13,6 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoAppMVP"
         android:usesCleartextTraffic="true">
+
+        <!--   Listener connection     -->
+        <receiver
+            android:name=".utils.network.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".activities.settings.SettingsActivity">
+
+        </activity>
         <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +37,12 @@
         <activity android:name=".edit_task.EditTaskActivity" />
         <activity android:name=".MainActivity">
 
-            <!--             <intent-filter>-->
-            <!--             <action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
 
-            <!--             <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--             </intent-filter>-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 
