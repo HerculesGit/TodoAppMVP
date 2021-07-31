@@ -264,7 +264,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         taskAdapter.restoreTask();
     }
 
-    public void setListener(OnNavDrawerListener listener) {
+    public void setOnNabDrawerListener(OnNavDrawerListener listener) {
         this.listener = listener;
     }
 }

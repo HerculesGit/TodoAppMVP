@@ -1,10 +1,5 @@
 package br.com.herco.todoappmvp.fragments.profile;
 
-import android.graphics.BlurMaskFilter;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -25,24 +20,23 @@ import br.com.herco.todoappmvp.adapters.NavAdapter;
 import br.com.herco.todoappmvp.fragments.BaseFragment;
 import br.com.herco.todoappmvp.fragments.NavItem;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
-import br.com.herco.todoappmvp.modules.animation.Circle;
-import br.com.herco.todoappmvp.modules.animation.CircleAngleAnimation;
+import br.com.herco.todoappmvp.models.TaskModel;
 
-public class ProfileFragment extends BaseFragment<ProfilePresenter> {
+public class ProfileFragment extends BaseFragment<ProfilePresenter> implements IProfileContract.IProfileView {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private OnNavDrawerListener listener;
-    private Circle circle;
-    private CircleAngleAnimation animation;
+//    private Circle circle;
+//    private CircleAngleAnimation animation;
 
     private List<NavItem> navItems;
     private ListView listViewNavItems;
     private int tasksInProgress = 0;
     private ProgressBar pBTasksInProgress;
 
-    public void setListener(OnNavDrawerListener listener) {
+    public void setOnNabDrawerListener(OnNavDrawerListener listener) {
         this.listener = listener;
     }
 
@@ -73,7 +67,7 @@ public class ProfileFragment extends BaseFragment<ProfilePresenter> {
 
     @Override
     public ProfilePresenter loadPresenter() {
-        return new ProfilePresenter();
+        return new ProfilePresenter(this);
     }
 
     @Override
@@ -102,8 +96,17 @@ public class ProfileFragment extends BaseFragment<ProfilePresenter> {
         buildBackDrawer();
     }
 
+    @Override
+    public void onCalculateTasksProgress(float totalProgressTasks) {
+        animateAroundProfileCircle(totalProgressTasks);
+    }
+
     private void initTasksInProgress() {
         pBTasksInProgress = findViewById(R.id.progress_bar_task_in_progress);
+    }
+
+    public void calculateTasksProgress(List<TaskModel> tasks) {
+        presenter.calculateTasksProgress(tasks);
     }
 
     /**
@@ -130,10 +133,10 @@ public class ProfileFragment extends BaseFragment<ProfilePresenter> {
 
     }
 
-    public void animateAroundProfileCircle() {
+    private void animateAroundProfileCircle(float totalProgressTasks) {
         new Handler(Looper.myLooper()).postDelayed(() -> {
             long duration = 1500;
-            ProgressBarAnimation anim = new ProgressBarAnimation(pBTasksInProgress, 0f, 40f);
+            ProgressBarAnimation anim = new ProgressBarAnimation(pBTasksInProgress, 0f, totalProgressTasks);
             anim.setDuration(duration);
             pBTasksInProgress.startAnimation(anim);
 //            Canvas canvas = new Canvas();

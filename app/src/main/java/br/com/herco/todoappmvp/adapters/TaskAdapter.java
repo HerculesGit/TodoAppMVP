@@ -16,6 +16,7 @@ import java.util.List;
 
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.observers.task.TaskObservable;
 import br.com.herco.todoappmvp.viewholders.TaskViewHolder;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
@@ -110,18 +111,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public void addTask(TaskModel taskModel) {
         tasks.add(0, taskModel);
         notifyDataSetChanged();
+        TaskObservable.onTasksUpdated(tasks);
     }
 
     public void addAllTasks(List<TaskModel> taskModels) {
         tasks = taskModels;
         tasksDeleted = new ArrayList<>();
         notifyDataSetChanged();
+        TaskObservable.onTasksUpdated(tasks);
     }
 
     public void deleteTask(int position) {
         lastTaskDeleted = tasks.remove(position);
         lastPositionDeleted = position;
         notifyItemRemoved(position);
+        TaskObservable.onTasksUpdated(tasks);
 
         if (tasksDeleted.isEmpty()) {
             tasksDeleted.add(lastTaskDeleted);
@@ -136,16 +140,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
             tasks.add(lastPositionDeleted, lastTaskDeleted);
             tasksDeleted.remove(lastTaskDeleted);
             notifyItemInserted(lastPositionDeleted);
+            TaskObservable.onTasksUpdated(tasks);
+
         }
     }
 
     public void restoreTask(int index) {
         TaskModel task = tasksDeleted.get(index);
         tasks.add(index, task);
+        TaskObservable.onTasksUpdated(tasks);
+
     }
 
     public void updateTask(int index, TaskModel taskUpdated) {
         notifyItemChanged(index, taskUpdated);
+        TaskObservable.onTasksUpdated(tasks);
     }
 
     public TaskModel getTaskDeletedById(String uuid) {

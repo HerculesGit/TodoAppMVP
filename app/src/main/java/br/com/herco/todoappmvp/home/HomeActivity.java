@@ -9,21 +9,27 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
+import java.util.List;
+
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.fragments.home.HomeFragment;
 import br.com.herco.todoappmvp.fragments.profile.ProfileFragment;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
+import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
+import br.com.herco.todoappmvp.observers.task.TaskChannel;
+import br.com.herco.todoappmvp.observers.task.TaskObservable;
 import br.com.herco.todoappmvp.repositories.user.UserRepository;
 
 public class HomeActivity extends BaseActivity<HomeActivityPresenter>
-        implements OnNavDrawerListener, IHomeContract.IHomeView {
+        implements OnNavDrawerListener, IHomeContract.IHomeView, TaskChannel {
 
     private ProfileFragment profileFragment;
     private HomeFragment homeFragment;
     private boolean drawerIsOpen = false;
+    private List<TaskModel> tasksLoaded;
 
     @Override
     public HomeActivityPresenter loadPresenter() {
@@ -47,8 +53,9 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
                 .replace(R.id.fragment_user, profileFragment, profileFragment.getTag())
                 .commit();
 
-        profileFragment.setListener(this);
-        homeFragment.setListener(this);
+        TaskObservable.addObserver(this);
+        profileFragment.setOnNabDrawerListener(this);
+        homeFragment.setOnNabDrawerListener(this);
     }
 
     @Override
@@ -97,7 +104,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
 
     private void openNavDrawer(View foregroundView, View backgroundView, Drawable drawable) {
         animateLeftToRightUserFragment(backgroundView);
-        profileFragment.animateAroundProfileCircle();
+        profileFragment.calculateTasksProgress(tasksLoaded);
 
         foregroundView.animate()
                 .translationX(foregroundView.getWidth() / 1.5f)
@@ -147,5 +154,11 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
     @Override
     public void getCurrentUserError(String message) {
         Log.e("HomeUError", message);
+    }
+
+    @Override
+    public void onTasksUpdated(List<TaskModel> tasks) {
+        this.tasksLoaded = tasks;
+        this.profileFragment.calculateTasksProgress(tasksLoaded);
     }
 }
