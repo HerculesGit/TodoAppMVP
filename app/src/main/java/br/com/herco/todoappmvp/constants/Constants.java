@@ -15,6 +15,11 @@ public class Constants {
         public static final String GSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     }
 
+    public static class Animations {
+        public static long FIRST_ANIMATION_DURATION = 1500;
+        public static int DELAY_TO_ANIMATE_CIRCLE_AROUND_PROFILE = 200;
+    }
+
     public static class TAGS {
         public static final String TASK = "TASK";
 

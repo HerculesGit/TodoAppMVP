@@ -7,8 +7,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -17,10 +15,12 @@ import java.util.List;
 
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.adapters.NavAdapter;
+import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.fragments.BaseFragment;
 import br.com.herco.todoappmvp.fragments.NavItem;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.modules.animation.ProgressBarAnimation;
 
 public class ProfileFragment extends BaseFragment<ProfilePresenter> implements IProfileContract.IProfileView {
 
@@ -28,12 +28,11 @@ public class ProfileFragment extends BaseFragment<ProfilePresenter> implements I
     private static final String ARG_PARAM2 = "param2";
 
     private OnNavDrawerListener listener;
-//    private Circle circle;
-//    private CircleAngleAnimation animation;
 
     private List<NavItem> navItems;
     private ListView listViewNavItems;
-    private int tasksInProgress = 0;
+
+    private ProgressBarAnimation progressBarAnimation;
     private ProgressBar pBTasksInProgress;
 
     public void setOnNabDrawerListener(OnNavDrawerListener listener) {
@@ -89,9 +88,6 @@ public class ProfileFragment extends BaseFragment<ProfilePresenter> implements I
         listViewNavItems = findViewById(R.id.lv_nav_items);
         listViewNavItems.setAdapter(navAdapter);
 
-//        circle = (Circle) findViewById(R.id.circle);
-//        animation = new CircleAngleAnimation(circle, 145);
-
         initTasksInProgress();
         buildBackDrawer();
     }
@@ -103,57 +99,17 @@ public class ProfileFragment extends BaseFragment<ProfilePresenter> implements I
 
     private void initTasksInProgress() {
         pBTasksInProgress = findViewById(R.id.progress_bar_task_in_progress);
+        progressBarAnimation = new ProgressBarAnimation(pBTasksInProgress, 0f, 0f);
     }
 
     public void calculateTasksProgress(List<TaskModel> tasks) {
         presenter.calculateTasksProgress(tasks);
     }
 
-    /**
-     * Class to custom the speed progress bar  animation
-     */
-    private class ProgressBarAnimation extends Animation {
-        private ProgressBar progressBar;
-        private float from;
-        private float to;
-
-        public ProgressBarAnimation(ProgressBar progressBar, float from, float to) {
-            super();
-            this.progressBar = progressBar;
-            this.from = from;
-            this.to = to;
-        }
-
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            super.applyTransformation(interpolatedTime, t);
-            float value = from + (to - from) * interpolatedTime;
-            progressBar.setProgress((int) value);
-        }
-
-    }
-
     private void animateAroundProfileCircle(float totalProgressTasks) {
         new Handler(Looper.myLooper()).postDelayed(() -> {
-            long duration = 1500;
-            ProgressBarAnimation anim = new ProgressBarAnimation(pBTasksInProgress, 0f, totalProgressTasks);
-            anim.setDuration(duration);
-            pBTasksInProgress.startAnimation(anim);
-//            Canvas canvas = new Canvas();
-//            Paint paint = new Paint();
-//            paint.setMaskFilter(new BlurMaskFilter(1000, BlurMaskFilter.Blur.SOLID));
-//
-//            canvas.drawPaint(paint);
-//            pBTasksInProgress.draw(canvas);
-//            pBTasksInProgress.setBackgroundTintMode(PorterDuff.Mode.OVERLAY);
-
-        }, 200);
-    }
-
-    public void stayDefaultAroundProfileCircle() {
-//        circle.setAngle(-145);
-//        animation.setDuration(0);
-//        circle.startAnimation(animation);
+            progressBarAnimation.setProgress((int) totalProgressTasks);
+        }, Constants.Animations.DELAY_TO_ANIMATE_CIRCLE_AROUND_PROFILE);
     }
 
     private void buildBackDrawer() {

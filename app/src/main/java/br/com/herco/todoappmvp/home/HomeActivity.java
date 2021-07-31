@@ -31,6 +31,8 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
     private boolean drawerIsOpen = false;
     private List<TaskModel> tasksLoaded;
 
+    private boolean isFirstLoading = true;
+
     @Override
     public HomeActivityPresenter loadPresenter() {
         return new HomeActivityPresenter(this, new UserRepository());
@@ -120,7 +122,6 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
 
     private void closeNavDrawer(View foregroundView, View backgroundView, Drawable drawable) {
         animateRightToLeftUserFragment(backgroundView);
-        profileFragment.stayDefaultAroundProfileCircle();
 
         foregroundView.animate()
                 .translationX(0)
@@ -159,6 +160,10 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
     @Override
     public void onTasksUpdated(List<TaskModel> tasks) {
         this.tasksLoaded = tasks;
-        this.profileFragment.calculateTasksProgress(tasksLoaded);
+
+        if (!isFirstLoading) {
+            this.profileFragment.calculateTasksProgress(tasksLoaded);
+        }
+        isFirstLoading = false;
     }
 }
