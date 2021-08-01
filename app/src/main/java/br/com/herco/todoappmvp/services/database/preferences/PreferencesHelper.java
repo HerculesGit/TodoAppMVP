@@ -20,7 +20,7 @@ public class PreferencesHelper {
         return Integer.valueOf(key);
     }
 
-    static String getUUID (){
+    public static String getUUID (){
         return UUID.randomUUID().toString();
     }
 }

@@ -13,6 +13,7 @@ public class Constants {
         public static final int MAX_ID = 10;
 
         public static final String GSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+        // public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
     }
 
     public static class Animations {

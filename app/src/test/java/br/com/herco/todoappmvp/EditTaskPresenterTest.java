@@ -13,7 +13,9 @@ import br.com.herco.todoappmvp.edit_task.EditTaskPresenter;
 import br.com.herco.todoappmvp.edit_task.IEditTaskContract;
 import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.repositories.task.ITaskRestRepository;
 import br.com.herco.todoappmvp.repositories.task.TaskRepository;
+import io.reactivex.Observable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,7 +29,7 @@ public class EditTaskPresenterTest {
     private EditTaskPresenter presenter;
 
     @Mock
-    private TaskRepository repository;
+    private ITaskRestRepository repository;
 
     @Mock
     private IEditTaskContract viewContract;
@@ -73,7 +75,7 @@ public class EditTaskPresenterTest {
         final String taskName = "Learn unit test to android with java";
         final TaskModel taskModel = new TaskModel(taskName);
 
-        when(repository.createTask(taskModel)).thenReturn(taskModel);
+        when(repository.createTask(taskModel)).thenReturn(Observable.just(taskModel));
 
         assertNotNull(taskModel.getName());
         assertEquals(taskModel.getName(), taskName);
