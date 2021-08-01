@@ -116,7 +116,7 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
 
         if (taskModel.getDeletedAt() != null) {
             String deletedAt = simpleDateFormat.format(taskModel.getUpdatedAt());
-            values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT, deletedAt);
+            values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_DELETED_AT, deletedAt);
         }
 
         db.update(DataBaseSQLiteHelper.TaskEntry.TABLE_NAME, values,
