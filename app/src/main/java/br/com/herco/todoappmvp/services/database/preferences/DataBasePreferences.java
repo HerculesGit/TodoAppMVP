@@ -85,4 +85,15 @@ public class DataBasePreferences implements IDataBaseService {
         }
         return -1;
     }
+
+    @Override
+    public void saveOffLineSynchronizationValue(boolean value) {
+        editor.putBoolean(Constants.Database.OFFLINE_SYNCHRONIZATION, value);
+        editor.commit();
+    }
+
+    @Override
+    public boolean getOffLineSynchronizationValue() {
+        return sharedPreferences.getBoolean(Constants.Database.OFFLINE_SYNCHRONIZATION, false);
+    }
 }

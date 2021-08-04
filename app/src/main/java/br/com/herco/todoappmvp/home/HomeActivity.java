@@ -18,10 +18,15 @@ import br.com.herco.todoappmvp.fragments.profile.ProfileFragment;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.models.UserModel;
+import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.observers.task.TaskChannel;
 import br.com.herco.todoappmvp.observers.task.TaskObservable;
 import br.com.herco.todoappmvp.repositories.user.UserRepository;
+import br.com.herco.todoappmvp.services.database.sqlite.DataBaseSQLiteHelper;
+import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
+import br.com.herco.todoappmvp.services.synchronize.ISynchronizedDatabase;
+import br.com.herco.todoappmvp.services.synchronize.SynchronizedDatabase;
 
 public class HomeActivity extends BaseActivity<HomeActivityPresenter>
         implements OnNavDrawerListener, IHomeContract.IHomeView, TaskChannel {
@@ -35,6 +40,13 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
 
     @Override
     public HomeActivityPresenter loadPresenter() {
+        TodoAppDependenciesManager.addDependency(
+                "SYNCHRONIZED_DATABASE", new SynchronizedDatabase(new DataBaseSQLiteHelper(this))
+        );
+        ISynchronizedDatabase synchronizedDatabase =
+                (ISynchronizedDatabase) TodoAppDependenciesManager.getDependency("SYNCHRONIZED_DATABASE");
+
+        TodoAppDependenciesManager.addDependency("SQLITE_CLIENT", new SQLiteClient(synchronizedDatabase));
         return new HomeActivityPresenter(this, new UserRepository());
     }
 

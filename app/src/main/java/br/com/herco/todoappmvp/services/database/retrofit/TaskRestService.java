@@ -3,6 +3,7 @@ package br.com.herco.todoappmvp.services.database.retrofit;
 import java.util.List;
 
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.modules.di.DI;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -15,6 +16,9 @@ public interface TaskRestService {
 
     @GET("user/{userId}/tasks")
     Observable<List<TaskModel>> listTasks(@Path("userId") String userId);
+
+    @POST("user/{userId}/tasks/synchronize")
+    Observable<List<TaskModel>> synchronizeTasks(@Path("userId") String userId, @Body List<TaskModel> task);
 
     @POST("tasks")
     Observable<TaskModel> postTask(@Body TaskModel task);

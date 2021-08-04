@@ -11,4 +11,7 @@ public interface IDataBaseService {
 
     List<TaskModel> getAllTaskByUser(int userId);
 
+    void saveOffLineSynchronizationValue(boolean value);
+
+    boolean getOffLineSynchronizationValue();
 }

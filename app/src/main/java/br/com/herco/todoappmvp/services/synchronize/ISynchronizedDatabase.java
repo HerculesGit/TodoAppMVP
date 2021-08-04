@@ -4,9 +4,10 @@ package br.com.herco.todoappmvp.services.synchronize;
 import java.util.List;
 
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.modules.di.DI;
 import io.reactivex.Observable;
 
-public interface ISynchronizedDatabase {
+public interface ISynchronizedDatabase extends DI {
 
     /**
      * if task.id==null, create a task for it

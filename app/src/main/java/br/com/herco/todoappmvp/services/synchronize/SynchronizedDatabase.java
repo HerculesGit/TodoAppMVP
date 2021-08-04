@@ -35,6 +35,10 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         String createdAt = simpleDateFormat.format(new Date());
         String updatedAt = simpleDateFormat.format(new Date());
 
+        if (!synchronize) {
+            taskModel.setId(PreferencesHelper.getUUID());
+        }
+
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DataBaseSQLiteHelper.TaskEntry._ID, taskModel.getId());
@@ -44,7 +48,6 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_USER_ID, taskModel.getUserId());
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT, createdAt);
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT, updatedAt);
-//        values.put(TaskEntry.COLUMN_NAME_SUBTITLE, subtitle);
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(DataBaseSQLiteHelper.TaskEntry.TABLE_NAME, null, values);
@@ -71,6 +74,7 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_USER_ID, taskModel.getUserId());
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT, createdAt);
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT, updatedAt);
+        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_SYNCHRONIZED, 0);
 
         if (taskModel.getDeletedAt() != null) {
             String deletedAt = simpleDateFormat.format(taskModel.getDeletedAt());
@@ -151,7 +155,7 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
 
                 TaskModel taskModel = new TaskModel(name, isDone == 1);
                 taskModel.setId(uuid);
-
+                taskModel.setUserId(userId);
 
                 try {
                     String isoDatePattern = Constants.Database.GSON_DATE_FORMAT;

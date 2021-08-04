@@ -16,4 +16,6 @@ public interface ITaskRestRepository {
     Observable<TaskModel> getTask(String taskId) throws TaskException;
 
     Observable<List<TaskModel>> getAllTasks(String userId) throws TaskException;
+
+    Observable<List<TaskModel>> synchronizeTasks(String userId, List<TaskModel> tasks) throws TaskException;
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.net.InetAddress;
+
 public class NetworkUtil {
     public static final int TYPE_WIFI = 1;
     public static final int TYPE_MOBILE = 2;
@@ -38,5 +40,17 @@ public class NetworkUtil {
             status = NETWORK_STATUS_NOT_CONNECTED;
         }
         return status;
+    }
+
+
+    public static boolean isInternetAvailable() {
+        try {
+            InetAddress inetAddress = InetAddress.getByName("google.com");
+            //You can replace it with your name
+            return !inetAddress.equals("");
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

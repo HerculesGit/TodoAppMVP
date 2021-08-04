@@ -29,7 +29,8 @@ public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements
 
     @Override
     public EditTaskPresenter loadPresenter() {
-        return new EditTaskPresenter(this, new TaskRestRepositoryImpl());
+        // TODO: Melhorar isso
+        return new EditTaskPresenter(this, new TaskRestRepositoryImpl(TodoApp.getInstance()));
     }
 
     @Override

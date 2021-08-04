@@ -1,6 +1,8 @@
 package br.com.herco.todoappmvp.fragments.home;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import br.com.herco.todoappmvp.exceptions.TaskException;
@@ -21,17 +23,22 @@ public class HomeFragmentPresenter {
 
     @SuppressLint("CheckResult")
     public void loadTasks(String userId) {
-        try {
-            taskRepository.getAllTasks(userId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((tasks) -> iHomeContractView.onTasksLoad(tasks), throwable -> {
-                        throwable.printStackTrace();
-                        iHomeContractView.onTaskLoadError(throwable.getMessage());
-                    });
-        } catch (TaskException e) {
-            iHomeContractView.onTaskLoadError(e.getMessage());
-        }
+        // TODO: REMOVER ESSE DELAY FAKE. Está aqui até ajeitar app.isOnline()
+        int fakeDelay = 2000;
+        new Handler(Looper.myLooper()).postDelayed(() -> {
+            try {
+                taskRepository.getAllTasks(userId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe((tasks) -> iHomeContractView.onTasksLoad(tasks), throwable -> {
+                            throwable.printStackTrace();
+                            iHomeContractView.onTaskLoadError(throwable.getMessage());
+                        });
+            } catch (TaskException e) {
+                iHomeContractView.onTaskLoadError(e.getMessage());
+            }
+        }, fakeDelay);
+
     }
 
     @SuppressLint("CheckResult")

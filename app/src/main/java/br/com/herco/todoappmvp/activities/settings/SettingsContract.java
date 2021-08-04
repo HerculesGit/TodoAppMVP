@@ -5,9 +5,26 @@ public interface SettingsContract {
         void showActiveOfflineSyncMessage();
 
         void showDisabledOfflineSyncMessage();
+
+        void showSyncNowTextButton();
+
+        void hideSyncNowTextButton();
+
+        void showSyncNowProgress();
+
+        void hideSyncNowProgress();
+
+        void showFinishSyncMessage();
+
+        void changeOfflineSyncSwitch(boolean isChecked);
     }
 
     interface ISettingsPresenter {
+
+        void loadingOfflineSynchronization();
+
         void activeOfflineSynchronization(boolean active);
+
+        void synchronizeNow();
     }
 }

@@ -96,7 +96,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public HomeFragmentPresenter loadPresenter() {
-        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl());
+        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl(TodoApp.getInstance()));
     }
 
     private void getFloatingActionButtonBNewTask() {
