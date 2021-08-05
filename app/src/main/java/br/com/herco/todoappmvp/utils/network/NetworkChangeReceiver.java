@@ -10,6 +10,8 @@ import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
+    private OnNetworkChangeListener onNetworkChange;
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
 
@@ -27,6 +29,11 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                 isOnline = true;
             }
         }
+        if (onNetworkChange != null) onNetworkChange.onNetworkChange(isOnline);
         TodoApp.getInstance().setOnline(isOnline);
+    }
+
+    public void setOnNetworkChange(OnNetworkChangeListener onNetworkChange) {
+        this.onNetworkChange = onNetworkChange;
     }
 }

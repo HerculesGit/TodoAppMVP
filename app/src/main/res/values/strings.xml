@@ -23,4 +23,5 @@
     <string name="task_removed">Task removed</string>
     <string name="offline_synchronization">Offline synchronization</string>
     <string name="synchronization">Synchronization</string>
+    <string name="no_internet_connection">No internet connection</string>
 </resources>
