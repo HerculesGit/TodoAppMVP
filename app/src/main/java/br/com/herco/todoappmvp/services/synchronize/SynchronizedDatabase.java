@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.herco.todoappmvp.constants.Constants;
+import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.services.database.preferences.PreferencesHelper;
 import br.com.herco.todoappmvp.services.database.sqlite.DataBaseSQLiteHelper;
@@ -129,6 +130,19 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         return Observable.just(taskModel);
     }
 
+    private TaskModel getOneTask(String taskId, String userId) throws TaskException {
+        final String query = "SELECT * FROM " + DataBaseSQLiteHelper.TaskEntry.TABLE_NAME
+                + " WHERE " + DataBaseSQLiteHelper.TaskEntry._ID + "='" + taskId + "'";
+        SQLiteDatabase db = dataHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            TaskModel taskModel = getTaskModelFromDatabase(cursor, userId);
+            return taskModel;
+        } else {
+            throw new TaskException("not found task: " + taskId);
+        }
+    }
 
     private List<TaskModel> getTasks(String userId, boolean addSynchronizedParameter) {
 
@@ -146,34 +160,39 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         List<TaskModel> tasks = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                String uuid = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry._ID));
-                String name = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_NAME));
-                int isDone = cursor.getInt(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_IS_DONE));
-                String createdAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT));
-                String updatedAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT));
-                String deletedAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_DELETED_AT));
-
-                TaskModel taskModel = new TaskModel(name, isDone == 1);
-                taskModel.setId(uuid);
-                taskModel.setUserId(userId);
-
-                try {
-                    String isoDatePattern = Constants.Database.GSON_DATE_FORMAT;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-                    simpleDateFormat.applyPattern(isoDatePattern);
-
-                    taskModel.setCreatedAt(simpleDateFormat.parse(createdAt));
-                    taskModel.setUpdatedAt(simpleDateFormat.parse(updatedAt));
-                    if (deletedAt != null) {
-                        taskModel.setDeletedAt(simpleDateFormat.parse(deletedAt));
-                    }
-
-                    tasks.add(taskModel);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                TaskModel taskModel = getTaskModelFromDatabase(cursor, userId);
+                tasks.add(taskModel);
             } while (cursor.moveToNext());
         }
         return tasks;
+    }
+
+    private TaskModel getTaskModelFromDatabase(Cursor cursor, String userId) {
+        String uuid = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry._ID));
+        String name = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_NAME));
+        int isDone = cursor.getInt(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_IS_DONE));
+        String createdAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT));
+        String updatedAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT));
+        String deletedAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_DELETED_AT));
+
+        TaskModel taskModel = new TaskModel(name, isDone == 1);
+        taskModel.setId(uuid);
+        taskModel.setUserId(userId);
+
+        try {
+            String isoDatePattern = Constants.Database.GSON_DATE_FORMAT;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+            simpleDateFormat.applyPattern(isoDatePattern);
+
+            taskModel.setCreatedAt(simpleDateFormat.parse(createdAt));
+            taskModel.setUpdatedAt(simpleDateFormat.parse(updatedAt));
+            if (deletedAt != null) {
+                taskModel.setDeletedAt(simpleDateFormat.parse(deletedAt));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return taskModel;
     }
 }
