@@ -14,8 +14,10 @@ import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.dto.TaskDTO;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.models.UserModel;
+import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
 
 public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements IEditTaskContract {
     private TaskDTO taskDTO;
@@ -29,8 +31,9 @@ public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements
 
     @Override
     public EditTaskPresenter loadPresenter() {
-        // TODO: Melhorar isso
-        return new EditTaskPresenter(this, new TaskRestRepositoryImpl(TodoApp.getInstance()));
+        SQLiteClient sqlClient = (SQLiteClient) TodoAppDependenciesManager.getDependency("SQLITE_CLIENT");
+
+        return new EditTaskPresenter(this, new TaskRestRepositoryImpl(sqlClient, TodoApp.getInstance()));
     }
 
     @Override

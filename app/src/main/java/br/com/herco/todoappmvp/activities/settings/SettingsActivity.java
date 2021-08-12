@@ -15,6 +15,7 @@ import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.preferences.DataBasePreferences;
+import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
 import br.com.herco.todoappmvp.services.synchronize.ISynchronizedDatabase;
 
 public class SettingsActivity extends BaseActivity<SettingsContract.ISettingsPresenter>
@@ -30,9 +31,11 @@ public class SettingsActivity extends BaseActivity<SettingsContract.ISettingsPre
         ISynchronizedDatabase synchronizedDatabase =
                 (ISynchronizedDatabase) TodoAppDependenciesManager.getDependency("SYNCHRONIZED_DATABASE");
 
+        SQLiteClient sqlClient = (SQLiteClient) TodoAppDependenciesManager.getDependency("SQLITE_CLIENT");
+
         return new SettingsPresenter(this, TodoApp.getInstance(),
                 synchronizedDatabase, new DataBasePreferences(getSharedPreferences(Constants.Database.DATABASE_PREFERENCES, Context.MODE_PRIVATE)),
-                new TaskRestRepositoryImpl(TodoApp.getInstance())
+                new TaskRestRepositoryImpl(sqlClient, TodoApp.getInstance())
         );
     }
 

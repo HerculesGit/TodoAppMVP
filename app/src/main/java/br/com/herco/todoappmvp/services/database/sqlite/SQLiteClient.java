@@ -28,7 +28,7 @@ public class SQLiteClient implements TaskRestService, DI {
 
     @Override
     public Observable<TaskModel> postTask(TaskModel task) {
-        return this.synchronizedDatabase.createTask(task, false);
+        return this.synchronizedDatabase.createTask(task);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class SQLiteClient implements TaskRestService, DI {
 
     @Override
     public Observable<TaskModel> deleteTask(String uuid) {
-        return null;
+        return this.synchronizedDatabase.deleteTask(uuid);
     }
 }

@@ -56,18 +56,18 @@ public class SettingsPresenter implements SettingsContract.ISettingsPresenter {
         settingsView.showSyncNowProgress();
         String userId = todoApp.getCurrentUser().getId();
 
-        try {
-            synchronizedDatabase.getUnsynchronizedTasks(userId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((tasks) -> {
-                        synchronizeTasks(userId, tasks);
-                    }, throwable -> {
-                        throwable.printStackTrace();
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            synchronizedDatabase.getUnsynchronizedTasks(userId)
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe((tasks) -> {
+//                        synchronizeTasks(userId, tasks);
+//                    }, throwable -> {
+//                        throwable.printStackTrace();
+//                    });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @SuppressLint("CheckResult")

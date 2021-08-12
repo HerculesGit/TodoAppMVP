@@ -25,9 +25,8 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         this.dataHelper = dataHelper;
     }
 
-
     @Override
-    public Observable<TaskModel> createTask(TaskModel taskModel, boolean synchronize) {
+    public Observable<TaskModel> createTask(TaskModel taskModel) {
         SQLiteDatabase db = dataHelper.getWritableDatabase();
 
         String isoDatePattern = Constants.Database.GSON_DATE_FORMAT;
@@ -36,16 +35,13 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         String createdAt = simpleDateFormat.format(new Date());
         String updatedAt = simpleDateFormat.format(new Date());
 
-        if (!synchronize) {
-            taskModel.setId(PreferencesHelper.getUUID());
-        }
+        taskModel.setId(PreferencesHelper.getUUID());
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DataBaseSQLiteHelper.TaskEntry._ID, taskModel.getId());
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_NAME, taskModel.getName());
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_IS_DONE, taskModel.isDone());
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_SYNCHRONIZED, synchronize);
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_USER_ID, taskModel.getUserId());
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT, createdAt);
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT, updatedAt);
@@ -75,7 +71,6 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_USER_ID, taskModel.getUserId());
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT, createdAt);
         values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT, updatedAt);
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_SYNCHRONIZED, 0);
 
         if (taskModel.getDeletedAt() != null) {
             String deletedAt = simpleDateFormat.format(taskModel.getDeletedAt());
@@ -91,67 +86,51 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
 
     @Override
     public Observable<List<TaskModel>> getAllTasks(String userId) {
-        return Observable.just(getTasks(userId, false));
+        return Observable.just(getTasks(userId));
     }
 
     @Override
-    public Observable<List<TaskModel>> getUnsynchronizedTasks(String userId) {
-        return Observable.just(getTasks(userId, true));
-    }
-
-
-    @Override
-    public Observable<TaskModel> synchronizeTask(TaskModel taskModel, String lastUUID) {
+    public Observable<TaskModel> deleteTask(String taskId) {
         SQLiteDatabase db = dataHelper.getWritableDatabase();
 
         String isoDatePattern = Constants.Database.GSON_DATE_FORMAT;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(isoDatePattern);
-
-        String createdAt = simpleDateFormat.format(taskModel.getCreatedAt());
-        String updatedAt = simpleDateFormat.format(taskModel.getUpdatedAt());
+        String deletedAt = simpleDateFormat.format(new Date());
 
         ContentValues values = new ContentValues();
-        values.put(DataBaseSQLiteHelper.TaskEntry._ID, taskModel.getId());
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_NAME, taskModel.getName());
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_IS_DONE, taskModel.isDone());
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_SYNCHRONIZED, 1);
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_USER_ID, taskModel.getUserId());
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT, createdAt);
-        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT, updatedAt);
-
-        if (taskModel.getDeletedAt() != null) {
-            String deletedAt = simpleDateFormat.format(taskModel.getUpdatedAt());
-            values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_DELETED_AT, deletedAt);
+        values.put(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_DELETED_AT, deletedAt);
+        Observable<TaskModel> observable = null;
+        try {
+            observable = getOneTask(taskId);
+        } catch (TaskException e) {
+            e.printStackTrace();
         }
 
         db.update(DataBaseSQLiteHelper.TaskEntry.TABLE_NAME, values,
                 DataBaseSQLiteHelper.TaskEntry._ID + " = ?",
-                new String[]{String.valueOf(lastUUID)});
-        return Observable.just(taskModel);
+                new String[]{taskId});
+        return observable;
     }
 
-    private TaskModel getOneTask(String taskId, String userId) throws TaskException {
+    public Observable<TaskModel> getOneTask(String taskId) throws TaskException {
         final String query = "SELECT * FROM " + DataBaseSQLiteHelper.TaskEntry.TABLE_NAME
                 + " WHERE " + DataBaseSQLiteHelper.TaskEntry._ID + "='" + taskId + "'";
         SQLiteDatabase db = dataHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
-            TaskModel taskModel = getTaskModelFromDatabase(cursor, userId);
-            return taskModel;
+            TaskModel taskModel = getTaskModelFromDatabase(cursor);
+            return Observable.just(taskModel);
         } else {
             throw new TaskException("not found task: " + taskId);
         }
     }
 
-    private List<TaskModel> getTasks(String userId, boolean addSynchronizedParameter) {
+    private List<TaskModel> getTasks(String userId) {
 
         SQLiteDatabase db = dataHelper.getReadableDatabase();
         final String query = "SELECT * FROM " + DataBaseSQLiteHelper.TaskEntry.TABLE_NAME
                 + " WHERE " + DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_USER_ID + "='" + userId + "'"
-
-                + (addSynchronizedParameter ? " AND " + DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_SYNCHRONIZED + "=0" : "")
-
                 + " AND " + DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_DELETED_AT + " IS NULL";
 
 
@@ -160,20 +139,21 @@ public class SynchronizedDatabase implements ISynchronizedDatabase {
         List<TaskModel> tasks = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                TaskModel taskModel = getTaskModelFromDatabase(cursor, userId);
+                TaskModel taskModel = getTaskModelFromDatabase(cursor);
                 tasks.add(taskModel);
             } while (cursor.moveToNext());
         }
         return tasks;
     }
 
-    private TaskModel getTaskModelFromDatabase(Cursor cursor, String userId) {
+    private TaskModel getTaskModelFromDatabase(Cursor cursor) {
         String uuid = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry._ID));
         String name = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_NAME));
         int isDone = cursor.getInt(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_IS_DONE));
         String createdAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_CREATED_AT));
         String updatedAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_UPDATED_AT));
         String deletedAt = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_DELETED_AT));
+        String userId = cursor.getString(cursor.getColumnIndex(DataBaseSQLiteHelper.TaskEntry.COLUMN_NAME_USER_ID));
 
         TaskModel taskModel = new TaskModel(name, isDone == 1);
         taskModel.setId(uuid);

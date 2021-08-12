@@ -40,7 +40,9 @@ import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
 import br.com.herco.todoappmvp.models.CategoryModel;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.models.UserModel;
+import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
 import br.com.herco.todoappmvp.viewholders.TaskViewHolder;
 
 import static br.com.herco.todoappmvp.constants.Constants.TAGS.TASK;
@@ -96,7 +98,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public HomeFragmentPresenter loadPresenter() {
-        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl(TodoApp.getInstance()));
+        SQLiteClient sqlClient = (SQLiteClient) TodoAppDependenciesManager.getDependency("SQLITE_CLIENT");
+        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl(sqlClient, TodoApp.getInstance()));
     }
 
     private void getFloatingActionButtonBNewTask() {

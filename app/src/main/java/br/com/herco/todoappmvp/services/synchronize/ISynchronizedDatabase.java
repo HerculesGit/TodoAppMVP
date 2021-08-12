@@ -3,20 +3,14 @@ package br.com.herco.todoappmvp.services.synchronize;
 
 import java.util.List;
 
+import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.modules.di.DI;
 import io.reactivex.Observable;
 
 public interface ISynchronizedDatabase extends DI {
 
-    /**
-     * if task.id==null, create a task for it
-     * else task.id!=null sync task
-     *
-     * @param taskModel
-     * @return taskCreated
-     */
-    Observable<TaskModel> createTask(TaskModel taskModel, boolean isSynchronized);
+    Observable<TaskModel> createTask(TaskModel taskModel);
 
     /**
      * not update synchronize
@@ -24,20 +18,18 @@ public interface ISynchronizedDatabase extends DI {
     Observable<TaskModel> updateTask(TaskModel taskModel);
 
     /**
-     * get only tasks with synchronized=false
-     *
-     * @return
-     */
-    Observable<List<TaskModel>> getUnsynchronizedTasks(String userId);
-
-    /**
-     * @param taskModel
-     */
-    Observable<TaskModel> synchronizeTask(TaskModel taskModel, String lastUUID);
-
-    /**
      * @param userId - the owner of the tasks
      */
     Observable<List<TaskModel>> getAllTasks(String userId);
 
+
+    /**
+     * Delete a task
+     *
+     * @param taskId
+     */
+    Observable<TaskModel> deleteTask(String taskId);
+
+
+    Observable<TaskModel> getOneTask(String taskId) throws TaskException;
 }
