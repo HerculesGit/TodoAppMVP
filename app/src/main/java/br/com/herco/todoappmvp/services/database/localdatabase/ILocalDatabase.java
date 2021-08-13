@@ -1,4 +1,4 @@
-package br.com.herco.todoappmvp.services.synchronize;
+package br.com.herco.todoappmvp.services.database.localdatabase;
 
 
 import java.util.List;
@@ -8,7 +8,7 @@ import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.modules.di.DI;
 import io.reactivex.Observable;
 
-public interface ISynchronizedDatabase extends DI {
+public interface ILocalDatabase extends DI {
 
     Observable<TaskModel> createTask(TaskModel taskModel);
 
@@ -32,4 +32,19 @@ public interface ISynchronizedDatabase extends DI {
 
 
     Observable<TaskModel> getOneTask(String taskId) throws TaskException;
+
+    /**
+     * Get all tasks with date less than last sunchronized date
+     *
+     * @param userId
+     */
+    Observable<List<TaskModel>> getUnsynchronizedTasks(String userId);
+
+    /**
+     * Save last synchronized date from server
+     *
+     * @param userId
+     * @param isoDate
+     */
+    Observable saveLastSynchronizedDate(String userId, String isoDate);
 }

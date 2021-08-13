@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.herco.todoappmvp.application.ITodoApp;
 import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.models.UserSynchronizedDateModel;
 import br.com.herco.todoappmvp.services.database.retrofit.TaskRestService;
 import io.reactivex.Observable;
 
@@ -44,7 +45,7 @@ public class TaskRestRepositoryImpl implements ITaskRestRepository {
     }
 
     @Override
-    public Observable<List<TaskModel>> synchronizeTasks(String userId, List<TaskModel> tasks) throws TaskException {
+    public Observable<UserSynchronizedDateModel> synchronizeTasks(String userId, List<TaskModel> tasks) {
         return service.synchronizeTasks(userId, tasks);
     }
 }

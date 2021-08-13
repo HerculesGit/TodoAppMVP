@@ -9,7 +9,7 @@ import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.repositories.task.ITaskRestRepository;
 import br.com.herco.todoappmvp.services.database.IDataBaseService;
-import br.com.herco.todoappmvp.services.synchronize.ISynchronizedDatabase;
+import br.com.herco.todoappmvp.services.database.localdatabase.ILocalDatabase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -19,11 +19,11 @@ public class SettingsPresenter implements SettingsContract.ISettingsPresenter {
     final ITodoApp todoApp;
     final IDataBaseService localStorage;
     final ITaskRestRepository taskRestRepository;
-    final ISynchronizedDatabase synchronizedDatabase;
+    final ILocalDatabase synchronizedDatabase;
 
     public SettingsPresenter(SettingsContract.ISettingsView settingsView,
                              ITodoApp todoApp,
-                             ISynchronizedDatabase synchronizedDatabase, IDataBaseService localStorage,
+                             ILocalDatabase synchronizedDatabase, IDataBaseService localStorage,
                              ITaskRestRepository taskRestRepository) {
         this.settingsView = settingsView;
         this.todoApp = todoApp;

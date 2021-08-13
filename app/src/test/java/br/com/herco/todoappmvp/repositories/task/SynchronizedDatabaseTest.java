@@ -10,14 +10,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 
 import br.com.herco.todoappmvp.models.TaskModel;
-import br.com.herco.todoappmvp.services.synchronize.ISynchronizedDatabase;
-import br.com.herco.todoappmvp.services.synchronize.SynchronizedDatabase;
+import br.com.herco.todoappmvp.services.database.localdatabase.ILocalDatabase;
+import br.com.herco.todoappmvp.services.database.localdatabase.LocalDatabase;
 import io.reactivex.Observable;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SynchronizedDatabaseTest {
     @Mock
-    private ISynchronizedDatabase synchronizedDatabase;
+    private ILocalDatabase synchronizedDatabase;
 
 
     private TaskModel taskModel = new TaskModel(
@@ -32,7 +32,7 @@ public class SynchronizedDatabaseTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         taskModel.setUserId(userId);
-        synchronizedDatabase = new SynchronizedDatabase(null);
+        synchronizedDatabase = new LocalDatabase(null);
     }
 
     @Test

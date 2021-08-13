@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
+import br.com.herco.todoappmvp.models.UserSynchronizedDateModel;
 import io.reactivex.Observable;
 
 public interface ITaskRestRepository {
@@ -17,5 +18,5 @@ public interface ITaskRestRepository {
 
     Observable<List<TaskModel>> getAllTasks(String userId) throws TaskException;
 
-    Observable<List<TaskModel>> synchronizeTasks(String userId, List<TaskModel> tasks) throws TaskException;
+    Observable<UserSynchronizedDateModel> synchronizeTasks(String userId, List<TaskModel> tasks) throws TaskException;
 }

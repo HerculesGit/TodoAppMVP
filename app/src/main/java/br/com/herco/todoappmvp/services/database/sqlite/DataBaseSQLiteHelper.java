@@ -1,16 +1,9 @@
 package br.com.herco.todoappmvp.services.database.sqlite;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Observable;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-
-import java.util.List;
-
-import br.com.herco.todoappmvp.models.TaskModel;
-import br.com.herco.todoappmvp.services.synchronize.ISynchronizedDatabase;
 
 public class DataBaseSQLiteHelper extends SQLiteOpenHelper {
 
@@ -79,7 +72,7 @@ public class DataBaseSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES_SYNCHRONIZED_DATA_TASK =
             "CREATE TABLE " + SynchronizedDataTask.TABLE_NAME + " (" +
-                    SynchronizedDataTask._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    SynchronizedDataTask._ID + " VARCHAR(255) NOT NULL PRIMARY KEY," +
                     SynchronizedDataTask.COLUMN_NAME_USER_ID + " VARCHAR(255) NOT NULL," +
                     SynchronizedDataTask.COLUMN_NAME_LAST_SYNCHRONIZED_DATE_TASK + " TEXT NOT NULL)";
 
