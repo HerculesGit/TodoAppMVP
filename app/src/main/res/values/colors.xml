@@ -12,13 +12,17 @@
     <color name="secondaryColor">#adbaeb</color>
     <color name="accentColor">#1540FF</color>
     <color name="userBackground">#0E1F54</color>
+    <color name="disabledColor">#A1A4B2</color>
 
     <!-- Neutral Color -->
     <color name="textLightColor">#9d9ab4</color>
     <color name="textBoldColor">#373b5e</color>
+    <color name="grayColor">#38383A</color>
+    <color name="inputGrayColor">#F2F2F2</color>
 
     <!-- Semantic Color -->
     <color name="magenta_color">#FF00FF</color>
     <color name="background_color">#f4f6fd</color>
     <color name="outlineButtonColor">#7687C6</color>
+
 </resources>

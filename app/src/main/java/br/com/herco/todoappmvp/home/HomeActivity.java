@@ -22,7 +22,7 @@ import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.observers.task.TaskChannel;
 import br.com.herco.todoappmvp.observers.task.TaskObservable;
-import br.com.herco.todoappmvp.repositories.user.UserRepository;
+import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.sqlite.DataBaseSQLiteHelper;
 import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
 import br.com.herco.todoappmvp.services.database.localdatabase.ILocalDatabase;
@@ -47,7 +47,7 @@ public class HomeActivity extends BaseActivity<HomeActivityPresenter>
                 (ILocalDatabase) TodoAppDependenciesManager.getDependency("LOCAL_DATABASE");
 
         TodoAppDependenciesManager.addDependency("SQLITE_CLIENT", new SQLiteClient(synchronizedDatabase));
-        return new HomeActivityPresenter(this, new UserRepository());
+        return new HomeActivityPresenter(this, new UserRepositoryImpl(null));
     }
 
     @Override

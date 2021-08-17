@@ -18,8 +18,8 @@ public class HomeActivityPresenter implements IHomeContract.IHomePresenter {
     @Override
     public void getCurrentUser() {
         try {
-            UserModel userModel = userRepository.getCurrentUser("any");
-            homeView.getCurrentUserSuccess(userModel);
+            //UserModel userModel = userRepository.getCurrentUser("any");
+            //homeView.getCurrentUserSuccess(userModel);
         } catch (Exception ex) {
             homeView.getCurrentUserError("Error" + ex.getMessage());
         }

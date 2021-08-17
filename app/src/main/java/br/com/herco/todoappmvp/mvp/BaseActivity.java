@@ -45,6 +45,8 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements IBase
 
     public abstract void initUI();
 
+    public final ActivityUtils activityUtils = ActivityUtils.getInstance();
+
     private NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver() {
 
         @Override
@@ -129,6 +131,11 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements IBase
         toast.show();
     }
 
+    protected void showToast(int resId) {
+        Toast toast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
     protected void showSnackBar(View parentLayout, String text, String textButton, View.OnClickListener onPressed) {
         Snackbar.make(parentLayout, text, Snackbar.LENGTH_LONG)
                 .setAction(textButton, view -> onPressed.onClick(view))
@@ -137,6 +144,6 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements IBase
     }
 
     private void setCurrentContext() {
-        ActivityUtils.getInstance().setCurrentContext(this);
+        activityUtils.setCurrentContext(this);
     }
 }

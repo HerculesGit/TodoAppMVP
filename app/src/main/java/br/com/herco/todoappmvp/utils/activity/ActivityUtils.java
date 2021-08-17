@@ -1,6 +1,8 @@
 package br.com.herco.todoappmvp.utils.activity;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 public final class ActivityUtils {
 
@@ -16,6 +18,17 @@ public final class ActivityUtils {
             instance = new ActivityUtils();
         }
         return instance;
+    }
+
+    public void to(Context context, Class clazz) {
+        Intent intent = new Intent(context, clazz);
+        context.startActivity(intent);
+    }
+
+    public void off(Activity activity, Class clazz) {
+        Intent intent = new Intent(activity, clazz);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     private Context currentContext;

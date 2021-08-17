@@ -24,4 +24,11 @@
     <string name="offline_synchronization">Offline synchronization</string>
     <string name="synchronization">Synchronization</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="log_in">Log in</string>
+    <string name="username_is_required">Username is required</string>
+    <string name="password_is_required">Password is required</string>
+    <string name="login_message_error_username_or_password_invalid">Username or passwrod invalid</string>
 </resources>

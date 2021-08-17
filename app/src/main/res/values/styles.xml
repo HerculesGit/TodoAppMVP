@@ -37,4 +37,13 @@
         <item name="android:background">@color/secondaryColor</item>
     </style>
 
+    <style name="outline_input" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxBackgroundColor">@color/inputGrayColor</item>
+        <item name="boxStrokeColor">@color/accentColor</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxStrokeWidth">0dp</item>
+    </style>
+
 </resources>
