@@ -6,7 +6,7 @@ import java.util.Map;
 public final class TodoAppDependenciesManager {
     private static TodoAppDependenciesManager instance;
 
-    private static Map<String, DI> mDependencies = new HashMap<>();
+    private static final Map<String, DI> mDependencies = new HashMap<>();
 
 
     private TodoAppDependenciesManager() {

@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import br.com.herco.todoappmvp.dto.UserLoginDTO;
 import br.com.herco.todoappmvp.exceptions.UserException;
 import br.com.herco.todoappmvp.services.database.retrofit.UserRestService;
 
@@ -36,12 +37,15 @@ public class UserRepositoryImplTest {
     public void shouldDoLoginUserWhenUsernameAndPasswordAreCorrected() throws Exception {
         String username = "Username";
         String password = "12345678";
-        verify(service, times(0)).login(username, password);
+
+        UserLoginDTO userLoginDTO = new UserLoginDTO();
+        userLoginDTO.setUsername(username);
+        userLoginDTO.setPassword(password);
 
         // when call the method
         userRepository.login(username, password);
 
-        verify(service, times(1)).login(username, password);
+       verify(service, times(1)).login(any());
     }
 
     @Test
@@ -60,7 +64,7 @@ public class UserRepositoryImplTest {
         } catch (UserException e) {
             assertEquals(e.getMessage(), messageError);
         }
-        verify(service, times(0)).login(null, null);
+        verify(service, times(0)).login(null);
     }
 
     @Test

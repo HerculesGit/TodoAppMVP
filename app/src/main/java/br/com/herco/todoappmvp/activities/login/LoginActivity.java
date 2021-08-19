@@ -1,5 +1,6 @@
 package br.com.herco.todoappmvp.activities.login;
 
+import android.content.Context;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -8,8 +9,13 @@ import androidx.annotation.StringRes;
 import com.google.android.material.textfield.TextInputEditText;
 
 import br.com.herco.todoappmvp.R;
+import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.home.HomeActivity;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
+import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;
+import br.com.herco.todoappmvp.services.database.retrofit.UserRestService;
+import br.com.herco.todoappmvp.services.database.secure_preferences.SecurePreferencesImpl;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.ILoginView {
     private TextInputEditText textInputUserName;
@@ -18,7 +24,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public LoginPresenter loadPresenter() {
-        return new LoginPresenter(this, null);
+        return new LoginPresenter(this, new UserRepositoryImpl(
+                ApiClient.create(UserRestService.class)
+        ), new SecurePreferencesImpl(getSharedPreferences(
+                Constants.Database.DATABASE_PREFERENCES, Context.MODE_PRIVATE)));
     }
 
     @Override
@@ -47,12 +56,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void loginSuccess() {
-        activityUtils.off(this, HomeActivity.class);
+        activityUtils.toOff(this, HomeActivity.class);
     }
 
     @Override
     public void loginError(int resId) {
         showToast(resId);
+        enableLoginButton();
     }
 
     @Override
@@ -64,6 +74,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void enableLoginButton() {
         loginButton.setClickable(true);
+        loginButton.setBackground(getDrawable(R.drawable.round_new_task_button));
     }
 
     @Override

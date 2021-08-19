@@ -13,7 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoAppMVP"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activities.splash_screen.SplashScreenActivity"
+            android:theme="@style/splash_screen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- Listener connection -->
         <receiver
             android:name=".utils.network.NetworkChangeReceiver"
@@ -24,18 +32,11 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activities.settings.SettingsActivity"></activity>
+        <activity android:name=".activities.settings.SettingsActivity" />
         <activity android:name=".activities.login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".home.HomeActivity">
 
         </activity>
+        <activity android:name=".home.HomeActivity"></activity>
         <activity android:name=".edit_task.EditTaskActivity" />
         <activity android:name=".MainActivity">
 

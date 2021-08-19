@@ -10,6 +10,9 @@ public class AuthUser {
     @SerializedName("auth")
     boolean auth;
 
+    @SerializedName("user")
+    UserModel userModel;
+
 
     public AuthUser(String token, boolean auth) {
         this.token = token;
@@ -30,6 +33,14 @@ public class AuthUser {
 
     public void setAuth(boolean auth) {
         this.auth = auth;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
     }
 
     @Override

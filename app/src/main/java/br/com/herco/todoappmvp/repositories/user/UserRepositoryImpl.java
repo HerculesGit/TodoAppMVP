@@ -1,5 +1,6 @@
 package br.com.herco.todoappmvp.repositories.user;
 
+import br.com.herco.todoappmvp.dto.UserLoginDTO;
 import br.com.herco.todoappmvp.exceptions.UserException;
 import br.com.herco.todoappmvp.models.AuthUser;
 import br.com.herco.todoappmvp.models.UserModel;
@@ -26,9 +27,12 @@ public class UserRepositoryImpl implements IUserRepository {
         if (username == null) throw new UserException("Username cannot be null");
         if (password == null) throw new UserException("Password cannot be null");
 
-        Observable<AuthUser> authUserObservable = null;
+        UserLoginDTO userLoginDTO = new UserLoginDTO();
+        userLoginDTO.setUsername(username);
+        userLoginDTO.setPassword(password);
+        Observable<AuthUser> authUserObservable;
         try {
-            authUserObservable = service.login(username, password);
+            authUserObservable = service.login(userLoginDTO);
         } catch (Exception e) {
             throw new UserException(e.getMessage());
         }

@@ -18,6 +18,11 @@ public class Constants {
         public static final String OFFLINE_SYNCHRONIZATION = "OFFLINE_SYNC_VALUE";
     }
 
+    public static class INJECTION_DEPENDENCIES {
+        public static final String LOCAL_DATABASE = "LOCAL_DATABASE";
+        public static final String SQLITE_CLIENT = "SQLITE_CLIENT";
+    }
+
 
     public static class Animations {
         public static long FIRST_ANIMATION_DURATION = 1500;

@@ -31,6 +31,11 @@ public final class TodoApp implements ITodoApp {
     }
 
     @Override
+    public void setCurrentUser(UserModel user) {
+        currentUser = user;
+    }
+
+    @Override
     public void setOnline(boolean online) {
         this.online = online;
     }

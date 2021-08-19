@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="splash_screen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+    </style>
+
     <style name="title">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/textBoldColor</item>

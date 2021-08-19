@@ -12,11 +12,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.concurrent.TimeUnit;
 
 import br.com.herco.todoappmvp.R;
+import br.com.herco.todoappmvp.dto.UserLoginDTO;
 import br.com.herco.todoappmvp.models.AuthUser;
 import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.repositories.user.IUserRepository;
 import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.retrofit.UserRestService;
+import br.com.herco.todoappmvp.services.database.secure_preferences.ISecurePreferences;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -71,9 +73,9 @@ public class LoginPresenterTest {
     class ApiClientMock implements UserRestService {
 
         @Override
-        public Observable<AuthUser> login(String username, String password) throws Exception {
+        public Observable<AuthUser> login(UserLoginDTO userLoginDTO) throws Exception {
 
-            if (!username.equals(FAKE_USERNAME) || !password.equals(FAKE_PASSWORD)) {
+            if (!userLoginDTO.getUsername().equals(FAKE_USERNAME) || !userLoginDTO.getPassword().equals(FAKE_PASSWORD)) {
                 throw new Exception("Username or password invalid");
             }
 
@@ -110,11 +112,14 @@ public class LoginPresenterTest {
     @Mock
     private IUserRepository userRepository;
 
+    @Mock
+    private ISecurePreferences securePreferences;
+
     @Before
     public void setUp() {
         apiClientMock = new ApiClientMock();
         userRepository = new UserRepositoryImpl(apiClientMock);
-        presenter = new LoginPresenter(view, userRepository);
+        presenter = new LoginPresenter(view, userRepository, securePreferences);
     }
 
     @Test

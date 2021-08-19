@@ -3,18 +3,22 @@ package br.com.herco.todoappmvp.activities.login;
 import android.annotation.SuppressLint;
 
 import br.com.herco.todoappmvp.R;
+import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.exceptions.UserException;
 import br.com.herco.todoappmvp.repositories.user.IUserRepository;
+import br.com.herco.todoappmvp.services.database.secure_preferences.ISecurePreferences;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginPresenter implements LoginContract.ILoginPresenter {
     private final LoginContract.ILoginView loginView;
     private final IUserRepository userRepository;
+    private final ISecurePreferences securePreferences;
 
-    public LoginPresenter(LoginContract.ILoginView view, IUserRepository userRepository) {
+    public LoginPresenter(LoginContract.ILoginView view, IUserRepository userRepository, ISecurePreferences securePreferences) {
         this.loginView = view;
         this.userRepository = userRepository;
+        this.securePreferences = securePreferences;
     }
 
     @Override
@@ -39,12 +43,17 @@ public class LoginPresenter implements LoginContract.ILoginPresenter {
     private void dotLoginRequest() {
         loginView.disableLoginButton();
 
+        final String username = loginView.getUserName();
+        final String password = loginView.getPassword();
         try {
-            userRepository.login(loginView.getUserName(), loginView.getPassword())
+            userRepository.login(username, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(userModel -> {
-                        System.out.println("Login_Presenter -> " + userModel);
+                    .subscribe(authUser -> {
+                        System.out.println("Login_Presenter -> " + authUser);
+                        TodoApp.getInstance().setCurrentUser(authUser.getUserModel());
+                        this.securePreferences.saveUserCredentials(username, password);
+                        this.securePreferences.saveToken(authUser.getToken());
                         loginView.loginSuccess();
                     }, throwable -> {
                         System.out.println("throwable -> " + throwable.getMessage());
