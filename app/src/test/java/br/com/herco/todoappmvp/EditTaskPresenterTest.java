@@ -80,9 +80,4 @@ public class EditTaskPresenterTest {
         assertNotNull(taskModel.getName());
         assertEquals(taskModel.getName(), taskName);
     }
-
-//    @Test()
-//    public void shouldAddIdToTheTask() throws TaskException {
-//    }
-
 }

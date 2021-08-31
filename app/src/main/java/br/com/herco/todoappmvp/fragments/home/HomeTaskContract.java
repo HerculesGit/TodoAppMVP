@@ -1,0 +1,35 @@
+package br.com.herco.todoappmvp.fragments.home;
+
+import androidx.annotation.StringRes;
+
+import java.util.List;
+
+import br.com.herco.todoappmvp.models.TaskModel;
+
+public interface HomeTaskContract {
+    interface IHomeTaskFragmentView {
+        void onLoadTaskSuccess(List<TaskModel> loadedTasks);
+
+        void onLoadTaskError(@StringRes int resId);
+
+        void onUpdatedTask(TaskModel taskModel);
+
+        void onUpdatedTaskError(@StringRes int resId);
+
+        void onDeletedTask();
+
+        void onDeletedTaskError(@StringRes int resId);
+
+        void noTasksFound();
+
+        void noInternetConnection();
+    }
+
+    interface IHomeTaskFragmentPresenter {
+        void loadAllTasks(String userId);
+
+        void deleteTask(TaskModel taskModel, int position);
+
+        void updateTask(TaskModel taskModel, int position);
+    }
+}

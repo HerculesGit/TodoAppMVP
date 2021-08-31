@@ -32,4 +32,7 @@
     <string name="password_is_required">Password is required</string>
     <string name="login_message_error_username_or_password_invalid">Username or passwrod invalid</string>
     <string name="loading">Loading...</string>
+
+    <string name="error_updating_task">Erro ao atualizar task</string>
+    <string name="error_deleting_task">Erro ao deletar task</string>
 </resources>
