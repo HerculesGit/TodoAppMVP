@@ -1,11 +1,15 @@
 package br.com.herco.todoappmvp.application;
 
+import br.com.herco.todoappmvp.models.AuthUser;
 import br.com.herco.todoappmvp.models.UserModel;
 
 public final class TodoApp implements ITodoApp {
     private static TodoApp instance;
 
     public UserModel currentUser;
+
+    public AuthUser authUser;
+
     private boolean online = false;
     private boolean offlineSynchronizationValue = true;
 
@@ -23,6 +27,14 @@ public final class TodoApp implements ITodoApp {
             instance = new TodoApp();
         }
         return instance;
+    }
+
+    public AuthUser getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(AuthUser authUser) {
+        this.authUser = authUser;
     }
 
     @Override

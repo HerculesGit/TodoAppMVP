@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -47,6 +49,19 @@ public abstract class BaseFragment<T> extends Fragment {
     protected void showToast(String message) {
         Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    protected void showToast(@StringRes int resId) {
+        Toast toast = Toast.makeText(getContext(), getString(resId), Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    public void showView(@NonNull View view) {
+        view.setVisibility(View.VISIBLE);
+    }
+
+    public void hideView(@NonNull View view) {
+        view.setVisibility(View.GONE);
     }
 
     /**

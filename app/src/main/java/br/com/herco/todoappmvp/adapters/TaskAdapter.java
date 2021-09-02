@@ -29,7 +29,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private int lastPositionDeleted;
 
     public TaskAdapter(Context context, RecyclerView recyclerViewTask, List<TaskModel> tasks) {
-        this.tasks = tasks;
+        this.tasks = new ArrayList<>();
         this.context = context;
         this.recyclerViewTask = recyclerViewTask;
         this.tasksDeleted = new ArrayList<>();

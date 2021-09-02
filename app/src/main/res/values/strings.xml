@@ -35,4 +35,8 @@
 
     <string name="error_updating_task">Erro ao atualizar task</string>
     <string name="error_deleting_task">Erro ao deletar task</string>
+    <string name="not_found_tasks">Not found tasks!</string>
+    <string name="tasks_is_empty">Ops! No tasks added. Start creates a new task for you</string>
+    <string name="server_error_500">Ops! On server error!</string>
+    <string name="error_load_tasks">Ops! Error to load all tasks!</string>
 </resources>

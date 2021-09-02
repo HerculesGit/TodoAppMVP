@@ -16,6 +16,7 @@ import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;
 import br.com.herco.todoappmvp.services.database.retrofit.UserRestService;
 import br.com.herco.todoappmvp.services.database.secure_preferences.SecurePreferencesImpl;
+import br.com.herco.todoappmvp.utils.KeyboardUtils;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.ILoginView {
     private TextInputEditText textInputUserName;
@@ -69,6 +70,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void disableLoginButton() {
         loginButton.setClickable(false);
         loginButton.setBackground(getDrawable(R.drawable.round_disable_primary_button));
+        KeyboardUtils.hideKeyboard(this);
     }
 
     @Override

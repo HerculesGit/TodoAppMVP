@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import br.com.herco.todoappmvp.application.ITodoApp;
 import br.com.herco.todoappmvp.exceptions.UserException;
-import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.repositories.user.IUserRepository;
 import br.com.herco.todoappmvp.services.database.secure_preferences.ISecurePreferences;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -30,34 +29,35 @@ public class SplashScreenPresenter implements ISplashScreenContract.ISplashScree
     @SuppressLint("CheckResult")
     @Override
     public void loadingCredentials() {
-        splashScreenView.goToLogin();
-//        final int passwordIndex = 0;
-//        final int userNameIndex = 1;
-//
-//        final String[] userCredentials = securePreferences.getUserCredentials();
-//        final String userName = userCredentials[userNameIndex];
-//        final String password = userCredentials[passwordIndex];
-//
-//        if (userName == null || password == null) {
-//            todoApp.setCurrentUser(new UserModel("", ""));
-//            splashScreenView.goToLogin();
-//            return;
-//        }
-//
-//        try {
-//            userRepository.login(userName, password)
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(
-//                            authUser -> {
-//                                securePreferences.saveToken(authUser.getToken());
-//                            }, throwable -> {
-//                                splashScreenView.showNoInternetConnection();
-//                                splashScreenView.hideLoading();
-//                            }
-//                    );
-//        } catch (UserException e) {
-//            splashScreenView.showNoInternetConnection();
-//        }
+        try {
+
+            final String[] credentials = securePreferences.getUserCredentials();
+            final String username = credentials[0];
+            final String password = credentials[1];
+
+            if (password == null || username == null) {
+                splashScreenView.goToHome();
+            } else {
+                userRepository.login(username, password)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                authUser -> {
+                                    todoApp.setAuthUser(authUser);
+                                    todoApp.setCurrentUser(authUser.getUserModel());
+                                    securePreferences.saveToken(authUser.getToken());
+                                    securePreferences.saveUserCredentials(authUser.getUsername(), authUser.getPassword());
+                                    splashScreenView.goToHome();
+
+                                }, throwable -> {
+                                    splashScreenView.goToLogin();
+                                    splashScreenView.showNoInternetConnection();
+                                    splashScreenView.hideLoading();
+                                }
+                        );
+            }
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
     }
 }

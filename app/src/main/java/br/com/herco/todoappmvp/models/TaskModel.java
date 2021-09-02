@@ -44,6 +44,13 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
         this.updatedAt = new Date();
     }
 
+    public TaskModel(String id, String name, boolean isDone, String userId) {
+        this.id = id;
+        this.name = name;
+        this.isDone = isDone;
+        this.userId = userId;
+    }
+
     public String getName() {
         return name;
     }

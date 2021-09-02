@@ -1,4 +1,4 @@
-package br.com.herco.todoappmvp;
+package br.com.herco.todoappmvp.temp_to_remove;
 
 import org.junit.Test;
 

@@ -1,5 +1,6 @@
 package br.com.herco.todoappmvp.activities.splash_screen;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -17,8 +18,11 @@ import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.localdatabase.ILocalDatabase;
 import br.com.herco.todoappmvp.services.database.localdatabase.LocalDatabase;
+import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;
+import br.com.herco.todoappmvp.services.database.retrofit.UserRestService;
 import br.com.herco.todoappmvp.services.database.secure_preferences.ISecurePreferences;
 //import br.com.herco.todoappmvp.services.database.secure_preferences.SecurePreferencesImpl;
+import br.com.herco.todoappmvp.services.database.secure_preferences.SecurePreferencesImpl;
 import br.com.herco.todoappmvp.services.database.sqlite.DataBaseSQLiteHelper;
 import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
 import br.com.herco.todoappmvp.utils.activity.ActivityUtils;
@@ -29,23 +33,14 @@ import static br.com.herco.todoappmvp.constants.Constants.INJECTION_DEPENDENCIES
 public class SplashScreenActivity extends AppCompatActivity
         implements ISplashScreenContract.ISplashScreenView {
 
-    private ISplashScreenContract.ISplashScreenPresenter presenter;
-
     private ActivityUtils activityUtils = ActivityUtils.getInstance();
 
-    private ISecurePreferences securePreferences;
-
     public void loadPresenter() {
+        ISecurePreferences securePreferences = new SecurePreferencesImpl((getSharedPreferences(
+                Constants.Database.DATABASE_PREFERENCES, Context.MODE_PRIVATE)));
 
-//        try {
-//            //securePreferences = new SecurePreferencesImpl(this);
-//        } catch (GeneralSecurityException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        presenter = new SplashScreenPresenter(this,
-                TodoApp.getInstance(), new UserRepositoryImpl(null),
+        ISplashScreenContract.ISplashScreenPresenter presenter = new SplashScreenPresenter(this,
+                TodoApp.getInstance(), new UserRepositoryImpl(ApiClient.create(UserRestService.class)),
                 securePreferences);
 
         presenter.loadingCredentials();

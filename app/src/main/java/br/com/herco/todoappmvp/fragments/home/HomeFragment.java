@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,8 @@ import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;
+import br.com.herco.todoappmvp.services.database.retrofit.TaskRestService;
 import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
 import br.com.herco.todoappmvp.viewholders.TaskViewHolder;
 
@@ -52,9 +55,14 @@ import static br.com.herco.todoappmvp.constants.Constants.TAGS.TASK;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements IHomeContractView, OnTaskListener {
+public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
+        HomeTaskContract.IHomeTaskFragmentView, OnTaskListener {
 
     private OnNavDrawerListener listener;
+
+    private ConstraintLayout constraintLayoutHomeTaskHeader;
+    private ConstraintLayout constraintLayoutHomeTaskBody;
+    private ConstraintLayout constraintLayoutNotFoundTasks;
 
     private RecyclerView recyclerViewCategory;
     private List<CategoryModel> categories;
@@ -90,16 +98,23 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         });
 
         this.getUser();
+        this.buildHeaderLayout();
+        this.buildHeaderBody();
+        this.buildNotFoundLayout();
         this.buildRecyclerViewCategories();
         this.buildRecyclerViewTasks();
         this.getFloatingActionButtonBNewTask();
-        this.presenter.loadTasks(currentUser.getId());
+        this.presenter.loadAllTasks(currentUser.getId());
     }
 
     @Override
     public HomeFragmentPresenter loadPresenter() {
         SQLiteClient sqlClient = (SQLiteClient) TodoAppDependenciesManager.getDependency("SQLITE_CLIENT");
-        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl(sqlClient, TodoApp.getInstance()));
+        return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl(
+
+
+                ApiClient.create(TaskRestService.class)
+                , TodoApp.getInstance()));
     }
 
     private void getFloatingActionButtonBNewTask() {
@@ -113,6 +128,18 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         this.currentUser = TodoApp.getInstance().getCurrentUser();
         final TextView textView = findViewById(R.id.tv_whats_up_user);
         textView.setText(getString(R.string.whats_up_user, currentUser.getName()));
+    }
+
+    private void buildHeaderLayout() {
+        constraintLayoutHomeTaskHeader = findViewById(R.id.constraint_layout_task_home_header);
+    }
+
+    private void buildHeaderBody() {
+        constraintLayoutHomeTaskBody = findViewById(R.id.constraint_layout_task_home_body);
+    }
+
+    private void buildNotFoundLayout() {
+        constraintLayoutNotFoundTasks = findViewById(R.id.linear_layout_not_found_tasks);
     }
 
     private void buildRecyclerViewCategories() {
@@ -184,44 +211,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     }
 
     @Override
-    public void onTasksLoad(List<TaskModel> tasks) {
-        Log.d(TASK, "call onTasksLoad");
-        taskAdapter.addAllTasks(tasks);
-    }
-
-    @Override
-    public void onTaskLoadError(String messageError) {
-        Log.d(TASK, "call onTaskLoadError");
-    }
-
-    @Override
     public void onTaskClicked(int index, TaskModel taskModel) {
-        presenter.updateTask(index, taskModel);
-    }
-
-    @Override
-    public void onUpdateTaskSuccess(int index, TaskModel taskUpdated) {
-        Log.d(TASK, "call updateTaskSuccess");
-        taskAdapter.updateTask(index, taskUpdated);
-    }
-
-    @Override
-    public void onUpdateTaskError(int index, String messageError) {
-        Log.d(TASK, "call updateTaskError");
-        showToast(messageError);
-        taskAdapter.notifyItemChanged(index);
-    }
-
-    @Override
-    public void onDeletedTask(int index) {
-        // taskAdapter.deleteTask(index);
-        Log.d(TASK, "call onDeletedTask");
-    }
-
-    @Override
-    public void onDeletedTaskError(int index, String messageError) {
-        showToast(messageError);
-        taskAdapter.restoreTask(index);
+        presenter.updateTask(taskModel, index);
     }
 
     @Override
@@ -255,7 +246,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         if (uuid != null) {
             try {
                 TaskModel lastTaskDeleted = taskAdapter.getTaskDeletedById(uuid);
-                presenter.deleteTask(taskAdapter.getLastPositionDeleted(), lastTaskDeleted);
+                presenter.deleteTask(lastTaskDeleted, taskAdapter.getLastPositionDeleted());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -269,5 +260,52 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     public void setOnNabDrawerListener(OnNavDrawerListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void onLoadTaskSuccess(List<TaskModel> loadedTasks) {
+        Log.d(TASK, "call onTasksLoad");
+        taskAdapter.addAllTasks(loadedTasks);
+    }
+
+    @Override
+    public void onLoadTaskError(int resId) {
+        Log.d(TASK, "call onTaskLoadError");
+        showToast(resId);
+    }
+
+    @Override
+    public void onUpdatedTask(TaskModel taskModel, int index) {
+        Log.d(TASK, "call updateTaskSuccess");
+        taskAdapter.updateTask(index, taskModel);
+    }
+
+    @Override
+    public void onUpdatedTaskError(int resId, int index) {
+        Log.d(TASK, "call updateTaskError");
+        showToast(resId);
+        taskAdapter.notifyItemChanged(index);
+    }
+
+    @Override
+    public void onDeletedTask(int index) {
+        Log.d(TASK, "call onDeletedTask" + index);
+    }
+
+    @Override
+    public void onDeletedTaskError(int resId, int index) {
+        showToast(resId);
+        taskAdapter.restoreTask(index);
+    }
+
+    @Override
+    public void noTasksFound() {
+        hideView(constraintLayoutHomeTaskBody);
+        showView(constraintLayoutNotFoundTasks);
+    }
+
+    @Override
+    public void noInternetConnection() {
+
     }
 }

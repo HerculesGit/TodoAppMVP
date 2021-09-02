@@ -5,71 +5,114 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.repositories.task.ITaskRestRepository;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 
-public class HomeFragmentPresenter {
-    final IHomeContractView iHomeContractView;
+public class HomeFragmentPresenter implements HomeTaskContract.IHomeTaskFragmentPresenter {
+    final HomeTaskContract.IHomeTaskFragmentView iHomeContractView;
     final ITaskRestRepository taskRepository;
 
-    public HomeFragmentPresenter(IHomeContractView mainContractView, ITaskRestRepository taskRepository) {
-        this.iHomeContractView = mainContractView;
+    public HomeFragmentPresenter(HomeTaskContract.IHomeTaskFragmentView iHomeTaskFragmentView, ITaskRestRepository taskRepository) {
+        this.iHomeContractView = iHomeTaskFragmentView;
         this.taskRepository = taskRepository;
     }
 
     @SuppressLint("CheckResult")
-    public void loadTasks(String userId) {
+    @Override
+    public void loadAllTasks(String userId) {
         // TODO: REMOVER ESSE DELAY FAKE. Está aqui até ajeitar app.isOnline()
-        int fakeDelay = 2000;
-        new Handler(Looper.myLooper()).postDelayed(() -> {
-            try {
-                taskRepository.getAllTasks(userId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe((tasks) -> iHomeContractView.onTasksLoad(tasks), throwable -> {
-                            throwable.printStackTrace();
-                            iHomeContractView.onTaskLoadError(throwable.getMessage());
-                        });
-            } catch (TaskException e) {
-                iHomeContractView.onTaskLoadError(e.getMessage());
-            }
-        }, fakeDelay);
-
-    }
-
-    @SuppressLint("CheckResult")
-    public void updateTask(int index, TaskModel taskModel) {
+//        int fakeDelay = 2000;
+//        new Handler().postDelayed(() -> {
+//
+//        }, fakeDelay);
         try {
-            taskRepository.updateTask(taskModel).subscribeOn(Schedulers.io())
+            taskRepository.getAllTasks(userId)
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((taskUpdated) -> iHomeContractView.onUpdateTaskSuccess(index, taskUpdated),
-                            throwable -> {
-                                iHomeContractView.onUpdateTaskError(index, throwable.getMessage());
-                            });
+                    .subscribe((tasks) -> {
+                        if (tasks.isEmpty()) {
+                            iHomeContractView.noTasksFound();
+                        } else {
+                            iHomeContractView.onLoadTaskSuccess(tasks);
+                        }
+                    }, throwable -> {
+                        int resId = R.string.error_load_tasks;
+
+                        if (throwable instanceof HttpException) {
+                            int code = ((HttpException) throwable).code();
+
+                            if (code == 500) {
+                                resId = R.string.server_error_500;
+                            }
+                        }
+
+                        iHomeContractView.onLoadTaskError(resId);
+                    });
         } catch (TaskException e) {
-            e.printStackTrace();
-            iHomeContractView.onUpdateTaskError(index, e.getMessage());
+            iHomeContractView.onLoadTaskError(R.string.error_load_tasks);
         }
     }
 
-
     @SuppressLint("CheckResult")
-    public void deleteTask(int index, TaskModel taskModel) {
-        Log.e(">>>>>>", "deleteTask" + taskModel.getId() + "  " + taskModel.isDone());
+    @Override
+    public void deleteTask(TaskModel taskModel, int index) {
         try {
             taskRepository.deleteTask(taskModel).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((taskUpdated) -> iHomeContractView.onDeletedTask(index),
                             throwable -> {
-                                iHomeContractView.onDeletedTaskError(index, throwable.getMessage());
+                                int resId = R.string.error_deleting_task;
+
+                                if (throwable instanceof HttpException) {
+                                    int code = ((HttpException) throwable).code();
+
+                                    if (code == 404) {
+                                        resId = R.string.not_found_tasks;
+                                    }
+                                }
+
+                                iHomeContractView.onDeletedTaskError(resId, index);
                             });
         } catch (TaskException e) {
             e.printStackTrace();
-            iHomeContractView.onDeletedTaskError(index, e.getMessage());
+            iHomeContractView.onDeletedTaskError(0, index);
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void updateTask(TaskModel taskModel, int index) {
+        try {
+            taskRepository.updateTask(taskModel)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((taskUpdated) -> {
+                                iHomeContractView.onUpdatedTask(taskUpdated, index);
+                            },
+                            (throwable) -> {
+                                int resId = R.string.error_updating_task;
+
+                                if (throwable instanceof HttpException) {
+                                    int code = ((HttpException) throwable).code();
+
+                                    if (code == 404) {
+                                        resId = R.string.not_found_tasks;
+                                    } else {
+                                        resId = R.string.error_updating_task;
+                                    }
+                                }
+                                iHomeContractView.onUpdatedTaskError(resId, index);
+                            });
+        } catch (TaskException e) {
+            e.printStackTrace();
+            iHomeContractView.onUpdatedTaskError(index, R.string.error_updating_task);
         }
     }
 }

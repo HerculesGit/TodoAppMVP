@@ -12,13 +12,13 @@ public interface HomeTaskContract {
 
         void onLoadTaskError(@StringRes int resId);
 
-        void onUpdatedTask(TaskModel taskModel);
+        void onUpdatedTask(TaskModel taskModel, int index);
 
-        void onUpdatedTaskError(@StringRes int resId);
+        void onUpdatedTaskError(@StringRes int resId, int index);
 
-        void onDeletedTask();
+        void onDeletedTask(int index);
 
-        void onDeletedTaskError(@StringRes int resId);
+        void onDeletedTaskError(@StringRes int resId, int index);
 
         void noTasksFound();
 
@@ -28,8 +28,8 @@ public interface HomeTaskContract {
     interface IHomeTaskFragmentPresenter {
         void loadAllTasks(String userId);
 
-        void deleteTask(TaskModel taskModel, int position);
+        void deleteTask(TaskModel taskModel, int index);
 
-        void updateTask(TaskModel taskModel, int position);
+        void updateTask(TaskModel taskModel, int index);
     }
 }

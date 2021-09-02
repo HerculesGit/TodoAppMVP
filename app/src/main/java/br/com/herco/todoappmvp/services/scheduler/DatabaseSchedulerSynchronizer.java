@@ -21,8 +21,8 @@ public class DatabaseSchedulerSynchronizer {
         mTimerTask = new TimerTask() {
             @Override
             public void run() {
-                Log.e(TAG, "call timerExpired " + new Date().toString());
-                timerExpired.onExpired();
+//                Log.e(TAG, "call timerExpired " + new Date().toString());
+//                timerExpired.onExpired();
             }
         };
         myTimer.schedule(mTimerTask, 0, 60000);

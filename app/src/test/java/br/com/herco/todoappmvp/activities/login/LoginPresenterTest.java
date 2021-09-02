@@ -1,15 +1,11 @@
 package br.com.herco.todoappmvp.activities.login;
 
-import androidx.annotation.NonNull;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.concurrent.TimeUnit;
 
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.dto.UserLoginDTO;
@@ -19,12 +15,8 @@ import br.com.herco.todoappmvp.repositories.user.IUserRepository;
 import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.retrofit.UserRestService;
 import br.com.herco.todoappmvp.services.database.secure_preferences.ISecurePreferences;
+import br.com.herco.todoappmvp.test_utils.RemoveLooperSchedulerErrorUtils;
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.schedulers.ExecutorScheduler;
-import io.reactivex.plugins.RxJavaPlugins;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,39 +27,9 @@ import static org.mockito.Mockito.when;
 public class LoginPresenterTest {
 
 
-    /**
-     * When execute the test without afterClass below code, the throws exception.
-     * <br/>
-     * This error occurs because the default scheduler returned by
-     * <br/>
-     * AndroidSchedulers.mainThread() is an instance of LooperScheduler and relies on Android dependencies that are not available in JUnit tests.
-     * <br/>
-     * Source; https://stackoverflow.com/questions/43356314/android-rxjava-2-junit-test-getmainlooper-in-android-os-looper-not-mocked-runt/43356315#43356315
-     */
     @BeforeClass
     public static void afterClass() {
-        Scheduler immediate = new Scheduler() {
-
-            @NonNull
-            @Override
-            public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
-
-                // this prevents StackOverflowErrors when scheduling with a delay
-                return super.scheduleDirect(run, 0, unit);
-            }
-
-            @NonNull
-            @Override
-            public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
-            }
-        };
-
-        RxJavaPlugins.setInitIoSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitComputationSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitNewThreadSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitSingleSchedulerHandler(scheduler -> immediate);
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> immediate);
+        RemoveLooperSchedulerErrorUtils.execute();
     }
 
     class ApiClientMock implements UserRestService {
