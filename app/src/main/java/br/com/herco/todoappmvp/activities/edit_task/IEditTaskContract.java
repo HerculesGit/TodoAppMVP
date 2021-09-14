@@ -1,4 +1,4 @@
-package br.com.herco.todoappmvp.edit_task;
+package br.com.herco.todoappmvp.activities.edit_task;
 
 import br.com.herco.todoappmvp.models.TaskModel;
 

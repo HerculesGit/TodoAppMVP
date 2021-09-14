@@ -6,14 +6,11 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.activities.login.LoginActivity;
 import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.constants.Constants;
-import br.com.herco.todoappmvp.home.HomeActivity;
+import br.com.herco.todoappmvp.activities.home.HomeActivity;
 import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.localdatabase.ILocalDatabase;

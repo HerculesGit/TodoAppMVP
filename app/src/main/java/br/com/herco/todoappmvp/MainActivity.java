@@ -20,7 +20,7 @@ import java.util.List;
 
 import br.com.herco.todoappmvp.adapters.OnTaskListener;
 import br.com.herco.todoappmvp.adapters.swiped.SwipeController;
-import br.com.herco.todoappmvp.edit_task.EditTaskActivity;
+import br.com.herco.todoappmvp.activities.edit_task.EditTaskActivity;
 import br.com.herco.todoappmvp.adapters.CategoryAdapter;
 import br.com.herco.todoappmvp.adapters.TaskAdapter;
 import br.com.herco.todoappmvp.constants.Constants;

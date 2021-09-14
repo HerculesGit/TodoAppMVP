@@ -39,8 +39,11 @@ public class HomeFragmentPresenter implements HomeTaskContract.IHomeTaskFragment
                     .subscribe((tasks) -> {
                         if (tasks.isEmpty()) {
                             iHomeContractView.noTasksFound();
+                            iHomeContractView.hideTasksLayout();
                         } else {
                             iHomeContractView.onLoadTaskSuccess(tasks);
+                            iHomeContractView.hideNotFoundTasks();
+                            iHomeContractView.showTasksLayout();
                         }
                     }, throwable -> {
                         int resId = R.string.error_load_tasks;

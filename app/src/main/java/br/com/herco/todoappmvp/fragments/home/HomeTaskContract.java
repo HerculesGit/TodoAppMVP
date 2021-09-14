@@ -23,6 +23,14 @@ public interface HomeTaskContract {
         void noTasksFound();
 
         void noInternetConnection();
+
+        void hideNotFoundTasks();
+
+        void showNotFoundTasks();
+
+        void showTasksLayout();
+
+        void hideTasksLayout();
     }
 
     interface IHomeTaskFragmentPresenter {

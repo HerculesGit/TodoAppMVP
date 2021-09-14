@@ -78,6 +78,9 @@ public class HomeTaskFragmentTest {
     public void shouldLoadAllTasksByUser() {
         presenter.loadAllTasks(apiTaskRestServiceMock.userId);
         verify(view, times(1)).onLoadTaskSuccess(apiTaskRestServiceMock.tasks);
+        verify(view, times(1)).hideNotFoundTasks();
+        verify(view, times(1)).showTasksLayout();
+
         verify(view, times(0)).onDeletedTaskError(anyInt(), anyInt());
         verify(view, times(0)).onUpdatedTaskError(anyInt(), anyInt());
         verify(view, times(0)).onUpdatedTaskError(anyInt(), anyInt());

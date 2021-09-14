@@ -1,6 +1,5 @@
-package br.com.herco.todoappmvp.home;
+package br.com.herco.todoappmvp.activities.home;
 
-import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.repositories.user.IUserRepository;
 
 public class HomeActivityPresenter implements IHomeContract.IHomePresenter {

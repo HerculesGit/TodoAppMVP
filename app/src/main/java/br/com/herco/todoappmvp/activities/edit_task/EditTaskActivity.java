@@ -1,4 +1,4 @@
-package br.com.herco.todoappmvp.edit_task;
+package br.com.herco.todoappmvp.activities.edit_task;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;
+import br.com.herco.todoappmvp.services.database.retrofit.TaskRestService;
 import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
 
 public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements IEditTaskContract {
@@ -31,9 +33,8 @@ public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements
 
     @Override
     public EditTaskPresenter loadPresenter() {
-        SQLiteClient sqlClient = (SQLiteClient) TodoAppDependenciesManager.getDependency("SQLITE_CLIENT");
-
-        return new EditTaskPresenter(this, new TaskRestRepositoryImpl(sqlClient, TodoApp.getInstance()));
+        return new EditTaskPresenter(this,
+                new TaskRestRepositoryImpl(ApiClient.create(TaskRestService.class), TodoApp.getInstance()));
     }
 
     @Override

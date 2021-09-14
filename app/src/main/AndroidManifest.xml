@@ -36,8 +36,8 @@
         <activity android:name=".activities.login.LoginActivity">
 
         </activity>
-        <activity android:name=".home.HomeActivity"></activity>
-        <activity android:name=".edit_task.EditTaskActivity" />
+        <activity android:name=".activities.home.HomeActivity"></activity>
+        <activity android:name=".activities.edit_task.EditTaskActivity" />
         <activity android:name=".MainActivity">
 
             <!-- <intent-filter> -->

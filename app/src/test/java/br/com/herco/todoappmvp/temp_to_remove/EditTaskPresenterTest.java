@@ -9,12 +9,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import br.com.herco.todoappmvp.edit_task.EditTaskPresenter;
-import br.com.herco.todoappmvp.edit_task.IEditTaskContract;
+import br.com.herco.todoappmvp.activities.edit_task.EditTaskPresenter;
+import br.com.herco.todoappmvp.activities.edit_task.IEditTaskContract;
 import br.com.herco.todoappmvp.exceptions.TaskException;
 import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.repositories.task.ITaskRestRepository;
-import br.com.herco.todoappmvp.repositories.task.TaskRepository;
 import io.reactivex.Observable;
 
 import static org.junit.Assert.assertEquals;

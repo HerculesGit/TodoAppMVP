@@ -1,4 +1,4 @@
-package br.com.herco.todoappmvp.edit_task;
+package br.com.herco.todoappmvp.activities.edit_task;
 
 import android.annotation.SuppressLint;
 
@@ -22,11 +22,13 @@ public class EditTaskPresenter extends BasePresenter {
     @SuppressLint("CheckResult")
     public void createTask(TaskModel taskModel, String userId) {
         try {
-            if (NetworkUtil.isInternetAvailable()) {
-                createLocalTask(taskModel, userId);
-            } else {
-                createRemoteTask(taskModel, userId);
-            }
+//            if (NetworkUtil.isInternetAvailable()) {
+//                createLocalTask(taskModel, userId);
+//            } else {
+//                createRemoteTask(taskModel, userId);
+//            }
+            createRemoteTask(taskModel, userId);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             mViewContract.onCreateTaskError(exception.getMessage());

@@ -1,4 +1,4 @@
-package br.com.herco.todoappmvp.home;
+package br.com.herco.todoappmvp.activities.home;
 
 import androidx.fragment.app.FragmentManager;
 

@@ -10,7 +10,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.constants.Constants;
-import br.com.herco.todoappmvp.home.HomeActivity;
+import br.com.herco.todoappmvp.activities.home.HomeActivity;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.repositories.user.UserRepositoryImpl;
 import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;

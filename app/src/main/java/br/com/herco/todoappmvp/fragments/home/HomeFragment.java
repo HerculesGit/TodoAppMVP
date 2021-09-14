@@ -35,7 +35,7 @@ import br.com.herco.todoappmvp.adapters.swiped.SwipeController;
 import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.constants.Constants;
 import br.com.herco.todoappmvp.dto.TaskDTO;
-import br.com.herco.todoappmvp.edit_task.EditTaskActivity;
+import br.com.herco.todoappmvp.activities.edit_task.EditTaskActivity;
 import br.com.herco.todoappmvp.fragments.BaseFragment;
 import br.com.herco.todoappmvp.listeners.OnNavDrawerListener;
 import br.com.herco.todoappmvp.models.CategoryModel;
@@ -200,6 +200,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
                         TaskDTO taskDTOReturned = (TaskDTO) data.getSerializableExtra(Constants.Keys.TASK_DTO);
                         if (taskDTOReturned != null) {
                             taskAdapter.addTask(taskDTOReturned.getTaskModel());
+                            showTasksLayout();
+                            hideNotFoundTasks();
                         }
                     }
                 }
@@ -300,12 +302,32 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void noTasksFound() {
-        hideView(constraintLayoutHomeTaskBody);
-        showView(constraintLayoutNotFoundTasks);
+        showNotFoundTasks();
+        hideTasksLayout();
     }
 
     @Override
     public void noInternetConnection() {
 
+    }
+
+    @Override
+    public void hideNotFoundTasks() {
+        hideView(constraintLayoutNotFoundTasks);
+    }
+
+    @Override
+    public void showNotFoundTasks() {
+        showView(constraintLayoutNotFoundTasks);
+    }
+
+    @Override
+    public void showTasksLayout() {
+        showView(constraintLayoutHomeTaskBody);
+    }
+
+    @Override
+    public void hideTasksLayout() {
+        hideView(constraintLayoutHomeTaskBody);
     }
 }

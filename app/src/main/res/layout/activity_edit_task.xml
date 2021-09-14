@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".edit_task.EditTaskActivity">
+    tools:context=".activities.edit_task.EditTaskActivity">
 
     <FrameLayout
         android:id="@+id/frame_layout_back_to_list"

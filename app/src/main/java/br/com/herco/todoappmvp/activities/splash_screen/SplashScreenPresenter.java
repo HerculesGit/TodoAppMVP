@@ -36,7 +36,7 @@ public class SplashScreenPresenter implements ISplashScreenContract.ISplashScree
             final String password = credentials[1];
 
             if (password == null || username == null) {
-                splashScreenView.goToHome();
+                splashScreenView.goToLogin();
             } else {
                 userRepository.login(username, password)
                         .subscribeOn(Schedulers.io())
