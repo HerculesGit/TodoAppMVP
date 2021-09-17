@@ -2,9 +2,12 @@ package br.com.herco.todoappmvp.activities.login;
 
 import android.annotation.SuppressLint;
 
+import java.net.SocketTimeoutException;
+
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.application.TodoApp;
 import br.com.herco.todoappmvp.exceptions.UserException;
+import br.com.herco.todoappmvp.models.ResponseError;
 import br.com.herco.todoappmvp.repositories.user.IUserRepository;
 import br.com.herco.todoappmvp.services.database.secure_preferences.ISecurePreferences;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,13 +55,14 @@ public class LoginPresenter implements LoginContract.ILoginPresenter {
                     .subscribe(authUser -> {
                         System.out.println("Login_Presenter -> " + authUser);
                         TodoApp.getInstance().setCurrentUser(authUser.getUserModel());
+                        TodoApp.getInstance().setAuthUser(authUser);
                         this.securePreferences.saveUserCredentials(username, password);
                         this.securePreferences.saveToken(authUser.getToken());
                         loginView.loginSuccess();
                     }, throwable -> {
-                        System.out.println("throwable -> " + throwable.getMessage());
-                        loginView.loginError(R.string.login_message_error_username_or_password_invalid);
+                        loginView.loginError(new ResponseError().getStringRes(throwable, R.string.login_message_error_username_or_password_invalid));
                         loginView.enableLoginButton();
+                        System.out.println("throwable -> " + throwable.getMessage());
                     });
         } catch (UserException ex) {
             System.out.println("throwable -> " + ex.getMessage());

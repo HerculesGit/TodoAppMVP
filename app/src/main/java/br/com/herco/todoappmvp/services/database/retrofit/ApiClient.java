@@ -51,23 +51,16 @@ public final class ApiClient {
 
     private OkHttpClient getInterceptor() {
         AuthUser authUser = TodoApp.getInstance().getAuthUser();
-
-        if (authUser == null) {
-            return null;
-        } else {
+        if (authUser != null) {
             final String token = authUser.getToken();
-
-            OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request request = chain.request().newBuilder()
-                            .addHeader("x-access-token", token).build();
-                    return chain.proceed(request);
-                }
+            return new OkHttpClient.Builder().addInterceptor(chain -> {
+                Request request = chain.request().newBuilder()
+                        .addHeader("x-access-token", token).build();
+                return chain.proceed(request);
             }).build();
-
-            return okHttpClient;
         }
+
+        return null;
     }
 
     public static <T> T create(final Class<T> tClass) {
