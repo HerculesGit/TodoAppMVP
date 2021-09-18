@@ -17,6 +17,7 @@ import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.mvp.BaseActivity;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.firebase.TaskFirebaseService;
 import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;
 import br.com.herco.todoappmvp.services.database.retrofit.TaskRestService;
 import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
@@ -34,7 +35,11 @@ public class EditTaskActivity extends BaseActivity<EditTaskPresenter> implements
     @Override
     public EditTaskPresenter loadPresenter() {
         return new EditTaskPresenter(this,
-                new TaskRestRepositoryImpl(ApiClient.create(TaskRestService.class), TodoApp.getInstance()));
+                new TaskRestRepositoryImpl(
+                        new TaskFirebaseService()
+                        // ApiClient.create(TaskRestService.class)
+                        ,
+                        TodoApp.getInstance()));
     }
 
     @Override

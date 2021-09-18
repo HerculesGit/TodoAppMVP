@@ -1,9 +1,6 @@
 package br.com.herco.todoappmvp.fragments.home;
 
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 
 import br.com.herco.todoappmvp.R;
 import br.com.herco.todoappmvp.exceptions.TaskException;

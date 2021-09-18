@@ -43,6 +43,8 @@ import br.com.herco.todoappmvp.models.TaskModel;
 import br.com.herco.todoappmvp.models.UserModel;
 import br.com.herco.todoappmvp.modules.di.TodoAppDependenciesManager;
 import br.com.herco.todoappmvp.repositories.task.TaskRestRepositoryImpl;
+import br.com.herco.todoappmvp.services.database.firebase.FirebaseClient;
+import br.com.herco.todoappmvp.services.database.firebase.TaskFirebaseService;
 import br.com.herco.todoappmvp.services.database.retrofit.ApiClient;
 import br.com.herco.todoappmvp.services.database.retrofit.TaskRestService;
 import br.com.herco.todoappmvp.services.database.sqlite.SQLiteClient;
@@ -113,7 +115,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         return new HomeFragmentPresenter(this, new TaskRestRepositoryImpl(
 
 
-                ApiClient.create(TaskRestService.class)
+//                ApiClient.create(TaskRestService.class)
+                new TaskFirebaseService()
                 , TodoApp.getInstance()));
     }
 
@@ -198,11 +201,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
                     Intent data = result.getData();
                     if (result.getResultCode() == Constants.Keys.ACTIVITY_FROM_RESULT_CODE_TASK && data != null) {
                         TaskDTO taskDTOReturned = (TaskDTO) data.getSerializableExtra(Constants.Keys.TASK_DTO);
-                        if (taskDTOReturned != null) {
-                            taskAdapter.addTask(taskDTOReturned.getTaskModel());
-                            showTasksLayout();
-                            hideNotFoundTasks();
-                        }
+//                        if (taskDTOReturned != null) {
+//                            taskAdapter.addTask(taskDTOReturned.getTaskModel());
+//                            showTasksLayout();
+//                            hideNotFoundTasks();
+//                        }
                     }
                 }
             });

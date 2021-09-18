@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TaskModel implements Serializable, Comparable<TaskModel> {
 
@@ -27,6 +29,9 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
 
     @SerializedName("userId")
     private String userId;
+
+    public TaskModel() {
+    }
 
     public TaskModel(String name) {
         this.name = name;
@@ -122,5 +127,16 @@ public class TaskModel implements Serializable, Comparable<TaskModel> {
     @Override
     public int compareTo(TaskModel task) {
         return (this.updatedAt.after(task.updatedAt)) ? 0 : -1;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("name", name);
+        result.put("isDone", isDone);
+        result.put("createdAt", createdAt);
+        result.put("updatedAt", updatedAt);
+        result.put("deletedAt", deletedAt);
+        return result;
     }
 }
