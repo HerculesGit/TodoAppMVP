@@ -109,9 +109,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     }
 
     public void addTask(TaskModel taskModel) {
-        tasks.add(0, taskModel);
-        notifyDataSetChanged();
-        TaskObservable.onTasksUpdated(tasks);
+        boolean addToTasks = true;
+        for (TaskModel task : tasks) {
+            if (task.getId().equals(taskModel.getId())) {
+                addToTasks = false;
+                break;
+            }
+        }
+        if (addToTasks) {
+            tasks.add(0, taskModel);
+            notifyDataSetChanged();
+            TaskObservable.onTasksUpdated(tasks);
+        }
     }
 
     public void addAllTasks(List<TaskModel> taskModels) {

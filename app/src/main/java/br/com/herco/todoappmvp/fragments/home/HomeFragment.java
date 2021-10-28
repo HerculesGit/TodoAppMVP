@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -65,6 +67,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     private ConstraintLayout constraintLayoutHomeTaskHeader;
     private ConstraintLayout constraintLayoutHomeTaskBody;
     private ConstraintLayout constraintLayoutNotFoundTasks;
+    private ConstraintLayout constraintLayoutLoadingTasksError;
+    private ProgressBar pgLoading;
 
     private RecyclerView recyclerViewCategory;
     private List<CategoryModel> categories;
@@ -103,6 +107,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         this.buildHeaderLayout();
         this.buildHeaderBody();
         this.buildNotFoundLayout();
+        this.buildLoadingTasksError();
+        this.buildLoading();
         this.buildRecyclerViewCategories();
         this.buildRecyclerViewTasks();
         this.getFloatingActionButtonBNewTask();
@@ -143,6 +149,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     private void buildNotFoundLayout() {
         constraintLayoutNotFoundTasks = findViewById(R.id.linear_layout_not_found_tasks);
+    }
+
+    private void buildLoadingTasksError() {
+        constraintLayoutLoadingTasksError = findViewById(R.id.linear_layout_loading_tasks_error);
+    }
+
+    private void buildLoading() {
+        pgLoading = findViewById(R.id.pg_loading);
     }
 
     private void buildRecyclerViewCategories() {
@@ -201,11 +215,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
                     Intent data = result.getData();
                     if (result.getResultCode() == Constants.Keys.ACTIVITY_FROM_RESULT_CODE_TASK && data != null) {
                         TaskDTO taskDTOReturned = (TaskDTO) data.getSerializableExtra(Constants.Keys.TASK_DTO);
-//                        if (taskDTOReturned != null) {
-//                            taskAdapter.addTask(taskDTOReturned.getTaskModel());
-//                            showTasksLayout();
-//                            hideNotFoundTasks();
-//                        }
+                        if (taskDTOReturned != null) {
+                            taskAdapter.addTask(taskDTOReturned.getTaskModel());
+                            showTasksLayout();
+                            hideNotFoundTasks();
+                        }
                     }
                 }
             });
@@ -270,6 +284,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void onLoadTaskSuccess(List<TaskModel> loadedTasks) {
         Log.d(TASK, "call onTasksLoad");
+        hideView(constraintLayoutLoadingTasksError);
+        hideLoading();
         taskAdapter.addAllTasks(loadedTasks);
     }
 
@@ -277,6 +293,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void onLoadTaskError(int resId) {
         Log.d(TASK, "call onTaskLoadError");
         showToast(resId);
+        hideLoading();
+        showView(constraintLayoutLoadingTasksError);
     }
 
     @Override
@@ -305,6 +323,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void noTasksFound() {
+        hideView(constraintLayoutLoadingTasksError);
         showNotFoundTasks();
         hideTasksLayout();
     }
@@ -322,15 +341,39 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void showNotFoundTasks() {
         showView(constraintLayoutNotFoundTasks);
+        showView(fabNewTask);
+        hideView(constraintLayoutLoadingTasksError);
     }
 
     @Override
     public void showTasksLayout() {
         showView(constraintLayoutHomeTaskBody);
+        hideView(constraintLayoutLoadingTasksError);
     }
 
     @Override
     public void hideTasksLayout() {
         hideView(constraintLayoutHomeTaskBody);
+    }
+
+    @Override
+    public void showLoading() {
+        showView(pgLoading);
+        hideView(constraintLayoutHomeTaskBody);
+        hideView(constraintLayoutNotFoundTasks);
+        hideView(fabNewTask);
+        hideView(constraintLayoutLoadingTasksError);
+    }
+
+    @Override
+    public void hideLoading() {
+        hideView(pgLoading);
+        hideView(constraintLayoutLoadingTasksError);
+        showView(fabNewTask);
+
+
+//        hideView(constraintLayoutHomeTaskBody);
+//        hideView(constraintLayoutNotFoundTasks);
+//        hideView(fabNewTask);
     }
 }

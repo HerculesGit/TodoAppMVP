@@ -4,8 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/activity_edit_task.xml" value="0.12552083333333333" />
+        <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/activity_home.xml" value="0.1425925925925926" />
         <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/activity_login.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/error_load_tasks.xml" value="0.25" />
         <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/fragment_home_tasks.xml" value="0.19194312796208532" />
+        <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/fragment_user.xml" value="0.20092592592592592" />
         <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/no_tasks_found.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/dellgaming/AndroidStudioProjects/TodoAppMVP/app/src/main/res/layout/not_found_tasks.xml" value="0.36666666666666664" />
       </map>

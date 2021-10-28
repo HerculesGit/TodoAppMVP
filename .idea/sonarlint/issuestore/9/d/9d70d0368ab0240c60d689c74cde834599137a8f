@@ -1,0 +1,12 @@
+
+h	java:S116"NRename this field "TAG" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶Õãáøÿÿÿÿ
+<
+java:S1170"!Make this final field static too.(¶Õãáøÿÿÿÿ
+S	java:S1066"9Replace this use of System.out or System.err by a logger.(—áıÿÿÿÿ
+D
+java:S4274­"(Replace this assert with a proper check.(æ÷÷úÿÿÿÿ
+T	java:S106Ö"9Replace this use of System.out or System.err by a logger.(—áıÿÿÿÿ
+j
+java:S1192y"ODefine a constant instead of duplicating this literal "SELECT * FROM " 5 times.(”ˆ¾Êşÿÿÿÿ
+^
+java:S1192z"HDefine a constant instead of duplicating this literal " WHERE " 5 times.(üã¬

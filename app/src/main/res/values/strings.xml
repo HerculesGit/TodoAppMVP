@@ -40,4 +40,5 @@
     <string name="server_error_500">Ops! On server error!</string>
     <string name="error_load_tasks">Ops! Error to load all tasks!</string>
     <string name="failed_to_connect_to_server">failed to connect to server</string>
+    <string name="tasks_error_message">Ops! Algo de errado não está certo</string>
 </resources>

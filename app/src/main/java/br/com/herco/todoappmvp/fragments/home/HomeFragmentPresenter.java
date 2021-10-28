@@ -29,6 +29,7 @@ public class HomeFragmentPresenter implements HomeTaskContract.IHomeTaskFragment
 //        new Handler().postDelayed(() -> {
 //
 //        }, fakeDelay);
+        iHomeContractView.showLoading();
         try {
             taskRepository.getAllTasks(userId)
                     .subscribeOn(Schedulers.io())
@@ -53,9 +54,11 @@ public class HomeFragmentPresenter implements HomeTaskContract.IHomeTaskFragment
                             }
                         }
 
+                        iHomeContractView.hideLoading();
                         iHomeContractView.onLoadTaskError(resId);
                     });
         } catch (TaskException e) {
+            iHomeContractView.hideLoading();
             iHomeContractView.onLoadTaskError(R.string.error_load_tasks);
         }
     }

@@ -1,0 +1,19 @@
+
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(±©…“ùÿÿÿÿ
+P
+java:S1118":Add a private constructor to hide the implicit public one.(‰ÁÒ¿
+P	java:S125"<This block of commented-out lines of code should be removed.(éÈ)
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(±©…“ùÿÿÿÿ
+U
+java:S1118":Add a private constructor to hide the implicit public one.(È¹˜®úÿÿÿÿ
+t	java:S115("ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(±©…“ùÿÿÿÿ
+U
+java:S1118%":Add a private constructor to hide the implicit public one.(Â¦Ö½ùÿÿÿÿ
+
+java:S11924"dDefine a constant instead of duplicating this literal " VARCHAR(255) NOT NULL PRIMARY KEY," 3 times.(ä«¤¡ÿÿÿÿÿ
+d
+java:S11923"NDefine a constant instead of duplicating this literal "CREATE TABLE " 3 times.(ƒ˜é
+k
+java:S11929"PDefine a constant instead of duplicating this literal " text NOT NULL," 4 times.(äŠùÿÿÿÿ
+q
+java:S1192P"VDefine a constant instead of duplicating this literal "DROP TABLE IF EXISTS " 3 times.(úÌ»æýÿÿÿÿ

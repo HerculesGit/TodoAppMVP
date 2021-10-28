@@ -31,6 +31,10 @@ public interface HomeTaskContract {
         void showTasksLayout();
 
         void hideTasksLayout();
+
+        void showLoading();
+
+        void hideLoading();
     }
 
     interface IHomeTaskFragmentPresenter {

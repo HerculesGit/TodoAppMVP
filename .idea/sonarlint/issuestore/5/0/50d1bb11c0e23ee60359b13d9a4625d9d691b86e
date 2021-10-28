@@ -1,0 +1,18 @@
+
+e	java:S116"PRename this field "TASKS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀıÖÎ
+7
+java:S1170"!Make this final field static too.(ÀıÖÎ
+G
+java:S1602",Remove useless curly braces around statement(ãÿ¢ÿÿÿÿÿ
+A
+java:S16028",Remove useless curly braces around statement(´—ıL
+G
+java:S1602:",Remove useless curly braces around statement(ï¹àèûÿÿÿÿ
+A
+java:S1602G",Remove useless curly braces around statement(´—ıL
+N	java:S106J"9Replace this use of System.out or System.err by a logger.(Ğ¦÷
+S	java:S106O"9Replace this use of System.out or System.err by a logger.(ÆÎ±Üûÿÿÿÿ
+A
+java:S1602Y",Remove useless curly braces around statement(´—ıL
+G
+java:S1602[",Remove useless curly braces around statement(ï¹àèûÿÿÿÿ

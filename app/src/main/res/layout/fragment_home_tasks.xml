@@ -70,6 +70,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ProgressBar
+            android:id="@+id/pg_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_task_home_header" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout_task_home_body"
             android:layout_width="match_parent"
@@ -146,6 +155,23 @@
             tools:visibility="visible">
 
             <include layout="@layout/not_found_tasks" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linear_layout_loading_tasks_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_task_home_header"
+            app:layout_constraintVertical_weight="1"
+            tools:visibility="visible">
+
+            <include layout="@layout/error_load_tasks" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
